@@ -13,7 +13,6 @@ import HomepageLayout from "./components/templates/HomepageLayout";
 function App() {
   return (
     <div className="container">
-      <h1>Fullstack App : ReactJS + Laravel</h1>
       <Routes>
         
         <Route path="/" element={<HomepageLayout />}>

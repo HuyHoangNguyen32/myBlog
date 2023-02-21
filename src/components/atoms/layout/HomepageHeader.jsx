@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 
 function HomepageHeader() {
-
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top" id="main-nav">
+      <div className="container">
         <NavLink className="navbar-brand" to="/">
           My Blog
         </NavLink>
@@ -18,22 +18,29 @@ function HomepageHeader() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav">
-            <NavLink className="nav-item nav-link" to="/posts">
-              Posts
-            </NavLink>
-            <NavLink className="nav-item nav-link" to="admin/create">
-              Create Post
-            </NavLink>
-            <NavLink className="nav-item nav-link" to="admin/edit">
-              Edit Post
-            </NavLink>
-          </div>
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <NavLink className="nav-item nav-link" to="/posts">
+                Posts
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-item nav-link" to="admin/create">
+                Create Post
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-item nav-link" to="admin/edit">
+                Edit Post
+              </NavLink>
+            </li>
+          </ul>
         </div>
-      </nav>
-  )
+      </div>
+    </nav>
+  );
 }
 
-export default HomepageHeader
-
+export default HomepageHeader;

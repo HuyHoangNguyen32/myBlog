@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import GlobalHeader from "../atoms/layout/GlobalHeader"
-// import Footer from "../atoms/layout/Footer"
+import Footer from "../atoms/layout/Footer"
 
 function GlobalLayout() {
 
@@ -8,7 +8,7 @@ function GlobalLayout() {
     <>
       <GlobalHeader/>
       <Outlet/>
-      {/* <Footer/> */}
+      <Footer/>
     </>
   )
 }

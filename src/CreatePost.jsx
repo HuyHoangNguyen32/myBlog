@@ -37,9 +37,9 @@ function CreatePost() {
   };
 
   return (
-    <div>
+    <div style={{paddingTop: 80, paddingBottom: 80}}>
       <h2>Create Posts</h2>
-      <div>
+      <div className="mt-3">
         <form>
           <div className="form-group">
             <label>Post Title</label>

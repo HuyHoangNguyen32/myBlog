@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import AdminHeader from "../atoms/layout/AdminHeader"
-// import Footer from "../atoms/layout/Footer"
+import Footer from "../atoms/layout/Footer"
 
 function AdminLayout() {
 
@@ -8,7 +8,7 @@ function AdminLayout() {
     <>
       <AdminHeader/>
       <Outlet/>
-      {/* <Footer/> */}
+      <Footer/>
     </>
   )
 }

@@ -9,7 +9,7 @@ function ListPosts() {
 
   const [posts, setPosts] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [postsPerPage] = useState(4)
+  const [postsPerPage] = useState(8)
   const navigate = useNavigate();
 
   const postsApi = "http://127.0.0.1:8000/api/books";
@@ -32,8 +32,7 @@ function ListPosts() {
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
 
   return (
-    <div>
-      <h2>List Posts</h2>
+    <div style={{paddingTop: 80, paddingBottom: 80}}>
       <div className="container">
         <div className="row m-2">
           {currentPosts.map((post) => (

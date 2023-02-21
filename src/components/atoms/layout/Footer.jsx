@@ -1,25 +1,21 @@
 import styled from "styled-components";
 
 function Footer() {
+
   return (
-    <FooterStyle>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav">
-            <p style={{color: "#fff"}}>Hello</p>
-          </div>
+    <footer id="main-footer" className="bg-dark fixed-bottom mt-5">
+    <div className="container">
+      <div className="row">
+        <div className="text-center">
+          <p style={{color: '#fff'}}>&copy;
+            <span>{new Date().getFullYear()}</span> My Blog
+          </p>
         </div>
-      </nav>
-    </FooterStyle>
+      </div>
+    </div>
+  </footer>
   );
 }
 
-const FooterStyle = styled.div`
-  text-align: center;
-  padding: 8px 0;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-`
 
 export default Footer;

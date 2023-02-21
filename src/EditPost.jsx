@@ -102,9 +102,8 @@ function EditPost() {
 
 
   return (
-    <div style={{marginTop: 25}}>
+    <div style={{marginTop: 80, paddingBottom: 80}}>
       <h2>Edit Posts</h2>
-
       {show && (
         <div>
           <form>
@@ -154,7 +153,7 @@ function EditPost() {
         </div>
       )}
 
-      <table className="table table-hover">
+      <table className="table table-hover mt-3">
         <thead>
           <tr className="table-primary">
             <th scope="col">No</th>

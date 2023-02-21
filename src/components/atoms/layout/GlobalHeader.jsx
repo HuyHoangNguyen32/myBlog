@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 
 function GlobalHeader() {
-
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+      <div className="container">
         <NavLink className="navbar-brand" to="/">
           My Blog
         </NavLink>
@@ -25,9 +25,9 @@ function GlobalHeader() {
             </NavLink>
           </div>
         </div>
-      </nav>
-  )
+      </div>
+    </nav>
+  );
 }
 
-export default GlobalHeader
-
+export default GlobalHeader;

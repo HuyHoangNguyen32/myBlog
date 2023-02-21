@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import HomepageHeader from "../atoms/layout/HomepageHeader"
-// import Footer from "../atoms/layout/Footer"
+import Footer from "../atoms/layout/Footer"
 
 function HomepageLayout() {
 
@@ -8,7 +8,7 @@ function HomepageLayout() {
     <>
       <HomepageHeader/>
       <Outlet/>
-      {/* <Footer/> */}
+      <Footer/>
     </>
   )
 }
