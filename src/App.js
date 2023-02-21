@@ -1,23 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Routes, Route } from "react-router-dom";
+import ListPosts from "./ListPosts";
+import CreatePost from "./CreatePost";
+import EditPost from "./EditPost";
+import Home from "./Home";
+import Post from "./Post";
+import NotFound from "./NotFound";
+import AdminLayout from "./components/templates/AdminLayout";
+import GlobalLayout from "./components/templates/GlobalLayout";
+import HomepageLayout from "./components/templates/HomepageLayout";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Fullstack App : ReactJS + Laravel</h1>
+      <Routes>
+        
+        <Route path="/" element={<HomepageLayout />}>
+          <Route index element={<Home />}/>
+        </Route>
+
+        <Route path="/posts" element={<GlobalLayout/>}>
+          <Route index element={<ListPosts />} />
+        </Route>
+
+        <Route path="/posts" element={<GlobalLayout/>}>
+          <Route path=":id" element={<ListPosts />} />
+        </Route>
+
+        <Route path="/post" element={<GlobalLayout/>}>
+          <Route path=":id" element={<Post/>} />
+        </Route>
+
+        <Route path="/admin" element={<AdminLayout/>}>
+          <Route path="create" element={<CreatePost />}/>
+          <Route path="edit" element={<EditPost />}>
+            <Route path=":id" element={<EditPost />}/>
+          </Route>
+        </Route>
+
+        <Route path="*" element={<NotFound/>}/>
+      </Routes> 
     </div>
   );
 }
