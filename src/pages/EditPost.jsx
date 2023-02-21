@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Pagination } from "./components/Pagination";
+import { Pagination } from "../components/Pagination";
 
 function EditPost() {
   document.title = "Edit Post Page";

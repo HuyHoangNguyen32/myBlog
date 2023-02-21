@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
-import GlobalHeader from "../atoms/layout/GlobalHeader"
-import Footer from "../atoms/layout/Footer"
+import GlobalHeader from "../layout/GlobalHeader"
+import Footer from "../layout/Footer"
 
 function GlobalLayout() {
 

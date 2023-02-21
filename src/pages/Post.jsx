@@ -16,7 +16,7 @@ function Post() {
   document.title = post.title;
 
   return (
-    <div className="container">
+    <div className="container" style={{paddingTop: 80}}>
         <div className="row">
           <h2>{post.title}</h2>
           <h3>{post.author}</h3>

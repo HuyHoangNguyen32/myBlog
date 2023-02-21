@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Pagination } from "./components/Pagination";
-import thumbnail from './assets/img/thumbnail.jpeg'
+import { Pagination } from "../components/Pagination";
+import thumbnail from '../assets/img/thumbnail.jpeg'
 
 function ListPosts() {
 
