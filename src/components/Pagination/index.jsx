@@ -1,3 +1,4 @@
+import styled from "styled-components";
 
 export const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
 
@@ -8,7 +9,7 @@ export const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   }
 
   return (
-    <nav>
+    <SNav>
       <ul className="pagination justify-content-center">
         {pageNumbers.map(number => (
           <li key={number} className="page-item">
@@ -18,6 +19,10 @@ export const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
           </li>
         ))}
       </ul>
-    </nav>
+    </SNav>
   )
 } 
+
+const SNav = styled.nav`
+  margin-top: 20px;
+`

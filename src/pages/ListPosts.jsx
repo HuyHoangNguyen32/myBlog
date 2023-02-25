@@ -1,63 +1,135 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { Pagination } from "../components/Pagination";
-import thumbnail from '../assets/img/thumbnail.jpeg'
+import thumbnail from "../assets/img/thumbnail.jpeg";
 
-function ListPosts() {
+export function ListPosts() {
+  // Hiển thị danh sách bài viết
+  const [posts, setPosts] = useState([]);
 
-  document.title = "List Posts Page";
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
 
-  const [posts, setPosts] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [postsPerPage] = useState(8)
+  // Tuỳ chỉnh link sử dụng useNavigate
   const navigate = useNavigate();
 
   const postsApi = "http://127.0.0.1:8000/api/books";
 
+  /**
+   * ! Show Posts
+   */
   useEffect(() => {
     fetch(postsApi)
       .then((response) => response.json())
       .then((posts) => setPosts(posts));
   }, []);
 
+  // Cập nhật title
+  useEffect(() => {
+    document.title = "List Posts Page";
+  });
+
+  /**
+   * ! Pagination
+   */
   // Change page
   const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber)
+    setCurrentPage(pageNumber);
     navigate(`/posts/${pageNumber}`);
-  }
+  };
 
   // Get current posts
-  const indexOfLastPost = currentPage * postsPerPage //10
-  const indexOfFirstPost = indexOfLastPost - postsPerPage // 0
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
-    <div style={{paddingTop: 80, paddingBottom: 80}}>
+    <div style={{ paddingTop: 80, paddingBottom: 80 }}>
       <div className="container">
         <div className="row m-2">
+          
+          <SForm class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+          </SForm>
+
           {currentPosts.map((post) => (
-            <div className="col-sm-6 col-md-3 v my-2">
-            <div className="card shadow-sm w-100" style={{ minHeight: 225 }} key={post.id}>
-              <img className="card-img-top" src={thumbnail} alt=""/>
-              <div className="card-body">
-                <h5 className="card-title text-center h3">{post.title.length > 15 ? `${post.title.slice(0,25)} ...` : post.title}</h5>
-                <p className="card-text">
-                  {post.author} - {post.publisher.length > 20 ? `${post.publisher.slice(0,50)} ...` : post.publisher} 
-                </p>
-                <button className="btn btn-primary">
-                  <NavLink style={{color: "#fff", textDecoration: "none"}} to={`/post/${post.id}`}>Read More</NavLink>
-                </button>
+            <div key={post.id} className="col-sm-6 col-md-3 my-2">
+              <div className="card shadow-sm w-100" style={{ minHeight: 225 }}>
+                <img className="card-img-top" src={thumbnail} alt="Posts Thumbnail" />
+                <div className="card-body">
+                  <STitle className="text-capitalize">{post.title}</STitle>
+                  <SAuthorDate>
+                    <p className="author">{post.author}</p>
+                    <p className="date">2023/02/25</p>
+                  </SAuthorDate>
+                  <SDescription>
+                    {post.publisher.length >= 80
+                      ? `${post.publisher.slice(0, 80)} ...`
+                      : post.publisher}
+                  </SDescription>
+                  <SButton className="btn btn-sm btn-primary">
+                    <NavLink
+                      style={{ color: "#fff", textDecoration: "none" }}
+                      to={`/post/${post.id}`}
+                    >
+                      Read More
+                    </NavLink>
+                  </SButton>
+                </div>
               </div>
-            </div>
             </div>
           ))}
 
-          <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}
-     />
+          <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={posts.length}
+            paginate={paginate}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-export default ListPosts;
+const SForm = styled.form`
+  margin-top: 5px;
+  margin-bottom: 20px;
+`
+
+const STitle = styled.h5`
+  font-size: 15px;
+  font-weight: bold;
+  &:hover {
+    color: #2980b9;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out 0s;
+  }
+`;
+
+const SAuthorDate = styled.div`
+  font-size: 10px;
+  color: #fff;
+  display: flex;
+  p {
+    border-radius: 5px;
+    padding: 1px 5px;
+    margin-bottom: 5px;
+  }
+  .date {
+    margin-left: 10px;
+    background-color: #7f8c8d;
+  }
+  .author {
+    background-color: #7f8c8d;
+  }
+`;
+
+const SDescription = styled.p`
+  font-size: 12px;
+`;
+
+const SButton = styled.button`
+  font-size: 10px;
+`;

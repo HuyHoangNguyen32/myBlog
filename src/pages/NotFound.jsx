@@ -1,10 +1,14 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-function NotFound() {
+export function NotFound() {
   
-  document.title = "404";
+  // Cập nhật title
+  useEffect(() => {
+    document.title = "404";
+  },);
 
+  // Đưa người dùng quay trở lại homapage sau 3s
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -16,9 +20,7 @@ function NotFound() {
   return (
     <div>
       <h1>404 - Page Not Found</h1>
-      <p>Back to Homepage after after 3 seconds.</p>
+      <p>Bạn sẽ tự động được đưa trở lại trang chủ trong vòng 3 giây !</p>
     </div>
   )
 }
-
-export default NotFound

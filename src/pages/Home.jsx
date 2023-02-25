@@ -1,7 +1,11 @@
+import { useEffect } from 'react'
 
+export function Home() {
 
-function Home() {
-  document.title = "HomePage";
+  // Cập nhật title
+  useEffect(() => {
+    document.title = "HomePage";
+  },);
 
   return (
     <div>
@@ -9,5 +13,3 @@ function Home() {
     </div>
   )
 }
-
-export default Home

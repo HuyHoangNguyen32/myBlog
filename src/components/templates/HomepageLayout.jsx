@@ -1,15 +1,13 @@
 import { Outlet } from "react-router-dom";
-import HomepageHeader from "../layout/HomepageHeader";
-import Footer from "../layout/Footer";
+import { HomepageHeader } from "../layout/HomepageHeader";
+import { Footer } from "../layout/Footer";
 
-function HomepageLayout() {
+export function HomepageLayout() {
   return (
-    <>
+    <div>
       <HomepageHeader />
       <Outlet />
       <Footer />
-    </>
+    </div>
   );
 }
-
-export default HomepageLayout;

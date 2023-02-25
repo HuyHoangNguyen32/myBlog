@@ -1,15 +1,13 @@
 import { Outlet } from "react-router-dom";
-import AdminHeader from "../layout/AdminHeader";
-import Footer from "../layout/Footer";
+import { AdminHeader } from "../layout/AdminHeader";
+import { Footer } from "../layout/Footer";
 
-function AdminLayout() {
+export function AdminLayout() {
   return (
-    <>
+    <div>
       <AdminHeader />
       <Outlet />
       <Footer />
-    </>
+    </div>
   );
 }
-
-export default AdminLayout;

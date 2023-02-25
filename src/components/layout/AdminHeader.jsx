@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-function AdminHeader() {
+export function AdminHeader() {
   return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
         <div className="container">
@@ -32,5 +32,3 @@ function AdminHeader() {
       </nav>
   );
 }
-
-export default AdminHeader;

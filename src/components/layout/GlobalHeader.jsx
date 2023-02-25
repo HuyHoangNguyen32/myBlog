@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-function GlobalHeader() {
+export function GlobalHeader() {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
       <div className="container">
@@ -30,4 +30,3 @@ function GlobalHeader() {
   );
 }
 
-export default GlobalHeader;

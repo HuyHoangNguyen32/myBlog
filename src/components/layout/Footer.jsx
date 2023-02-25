@@ -1,4 +1,4 @@
-function Footer() {
+export function Footer() {
 
   return (
     <footer id="main-footer" className="bg-dark fixed-bottom mt-5">
@@ -15,5 +15,3 @@ function Footer() {
   );
 }
 
-
-export default Footer;

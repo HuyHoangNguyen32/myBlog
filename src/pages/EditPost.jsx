@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
 
-function EditPost() {
-
-  document.title = "Edit Post Page";
+export function EditPost() {
 
   // Hiển thị danh sách bài viết
   const [posts, setPosts] = useState([]);
@@ -43,6 +41,12 @@ function EditPost() {
       .then((posts) => setPosts(posts));
   }, [update]);
 
+  // Cập nhật title
+  useEffect(() => {
+    document.title = "Edit Post Page";
+  },);
+
+
   /**
    * ! Delete Post
    */
@@ -59,7 +63,6 @@ function EditPost() {
       };
       fetch(putPostApi + "/" + id, options)
         .then((response) => response.json())
-        .then(console.log("OK"));
 
       alert("Bài viết của bạn đã được xoá.");
       setUpdate(Math.random());
@@ -73,14 +76,14 @@ function EditPost() {
    */
   // Logic diễn ra khi nhấn nút Edit
   function handleClickEditPost(postID) {
-    getPost(postID);
+    getEditPost(postID);
     setPostId(postID);
     setShowEditor(true);
     setShowListPost(false);
   }
 
   // Hiển thị thông tin bài viết người dùng muốn chỉnh sửa vào editor
-  const getPost = (id) => {
+  const getEditPost = (id) => {
     var options = {
       method: "GET",
       headers: {
@@ -100,7 +103,7 @@ function EditPost() {
   };
 
   // Cập nhật bài post khi người dùng nhấn nút Submit
-  const editPost = () => {
+  const submitEditPost = () => {
     var options = {
       method: "PUT",
       headers: {
@@ -193,7 +196,7 @@ function EditPost() {
           <button
             type="button"
             className="btn btn-sm btn-primary"
-            onClick={editPost}
+            onClick={submitEditPost}
           >
             Submit
           </button>
@@ -260,5 +263,3 @@ function EditPost() {
     </div>
   );
 }
-
-export default EditPost;
