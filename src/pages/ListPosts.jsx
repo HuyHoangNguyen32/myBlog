@@ -40,7 +40,7 @@ function ListPosts() {
             <div className="card shadow-sm w-100" style={{ minHeight: 225 }} key={post.id}>
               <img className="card-img-top" src={thumbnail} alt=""/>
               <div className="card-body">
-                <h5 className="card-title text-center h3">{post.title.length > 15 ? `${post.title.slice(0,25)} ...` : post.title} </h5>
+                <h5 className="card-title text-center h3">{post.title.length > 15 ? `${post.title.slice(0,25)} ...` : post.title}</h5>
                 <p className="card-text">
                   {post.author} - {post.publisher.length > 20 ? `${post.publisher.slice(0,50)} ...` : post.publisher} 
                 </p>
