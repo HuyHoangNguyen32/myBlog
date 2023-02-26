@@ -2,12 +2,13 @@ import { Routes, Route } from "react-router-dom";
 import { ListPosts } from "../pages/ListPosts";
 import { CreatePost } from "../pages/CreatePost";
 import { EditPost } from "../pages/EditPost";
-import { Home } from "../pages/Home";
+import { Welcome } from "../pages/Welcome";
 import { Post } from "../pages/Post";
 import { NotFound } from "../pages/NotFound";
 import { AdminLayout } from "../components/templates/AdminLayout";
 import { GlobalLayout } from "../components/templates/GlobalLayout";
 import { HomepageLayout } from "../components/templates/HomepageLayout";
+import { Login } from "../pages/Login";
 
 export const Routers = () => {
   return (
@@ -15,7 +16,11 @@ export const Routers = () => {
       <Routes>
         
         <Route path="/" element={<HomepageLayout />}>
-          <Route index element={<Home />}/>
+          <Route index element={<Welcome />} />
+        </Route>
+
+        <Route path="/login" element={<HomepageLayout />}>
+          <Route index element={<Login />} />
         </Route>
 
         <Route path="/posts" element={<GlobalLayout/>}>
@@ -38,6 +43,7 @@ export const Routers = () => {
         </Route>
 
         <Route path="*" element={<NotFound/>}/>
+
       </Routes> 
     </div>
   );

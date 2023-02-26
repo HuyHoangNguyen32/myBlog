@@ -49,7 +49,7 @@ export function CreatePost() {
 
   return (
     <div style={{ paddingTop: 80, paddingBottom: 80 }}>
-      <h2>Create Posts</h2>
+      <h2>Create Post</h2>
       <div className="mt-3">
         {/* Form nhập thông tin bài viết */}
         <form>
@@ -90,13 +90,13 @@ export function CreatePost() {
           <br />
           <div className="form-group">
             <label>Description</label>
-            <input
+            <textarea
               className="form-control"
               type="text"
               value={publisher}
               placeholder="Enter description"
               onChange={(e) => setPublisher(e.target.value)}
-            />
+            ></textarea>
           </div>
           <br />
           <div className="form-group">
