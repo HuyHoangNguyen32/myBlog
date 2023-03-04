@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import thumbnail from "../assets/img/post-detail-thumbnail.jpeg";
+import axios from "axios";
+import sampleThumbnail from "../assets/img/post-detail-thumbnail.jpeg";
 
 export function CreatePost() {
   // Cập nhật title, author, description
@@ -8,6 +9,13 @@ export function CreatePost() {
   const [author, setAuthor] = useState("");
   const [date, setDate] = useState();
   const [publisher, setPublisher] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
+  // Thumbnail State
+  const [thumbnail, setThumbnail] = useState(null)
+  const [imgPreview, setImgPreview] = useState(null)
+
+  const [image, setImage] = useState(null)
 
   const titleRef = useRef();
 
@@ -22,6 +30,10 @@ export function CreatePost() {
    * ! Gửi thông tin bài viết người dùng tạo lên Database
    */
   const publicPost = () => {
+
+    const formData = new FormData();
+    formData.append('image', image);
+
     var options = {
       method: "POST",
       headers: {
@@ -30,35 +42,85 @@ export function CreatePost() {
       body: JSON.stringify({
         title,
         author,
+        date,
         publisher,
+        thumbnail: formData,
       }),
     };
 
     fetch(putPostApi, options)
       .then((response) => response.json())
-      .then(alert("Bài viết của bạn đã được công bố"));
+      .then(setShowAlert(true));
 
     // Reset thông tin trên các ô input
     setTitle("");
     setAuthor("");
     setPublisher("");
+    setDate("yyyy/mm/dd")
 
     // Sau khi người dùng nhấn nút Public và gửi thông tin bài viết đi thì input Title sẽ được focus để người dùng tiếp tục nhập
     titleRef.current.focus();
   };
 
+  // Lấy thông tin date
+  const handleChangeDate = (e) => {
+    const newDate = e.target.value;
+    setDate(newDate);
+  }
+
+  // Hiển thị hình ảnh người dùng upload tại bài viết mẫu
+  const handleImgPreview = (e) => {
+    const fileSelected = e.target.files[0];
+    setThumbnail(fileSelected);
+    setImage(fileSelected);
+
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      setImgPreview(reader.result);
+    };
+    reader.readAsDataURL(fileSelected);
+  }
+
+  // test upload image to database in react use api
+  // function handleAPI() {
+  //   const formData = new FormData();
+  //   formData.append('image', image);
+  //   axios.post('url', formData).then((res)=>{
+  //     console.log(res);
+  //   })
+  // }
+
   return (
     <div style={{ paddingTop: 80, paddingBottom: 80 }}>
       <h2>Create Post</h2>
+
+      {/* <!-- Alert --> */}
+      {showAlert && (
+        <div>
+          <div
+            className="mt-5 mb-5 alert alert-info alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>Xin chúc mừng!</strong> Bài viết của bạn đã được công bố.
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setShowAlert(false)}
+            ></button>
+          </div>
+        </div>
+      )}
+
       <div className="mt-3">
         {/* Form nhập thông tin bài viết */}
         <form>
           <div className="form-group">
-            <label>Post Title</label>
+            <label className="form-label">Title</label>
             <input
               className="form-control"
               type="text"
-              required
               value={title}
               placeholder="Enter title"
               onChange={(e) => setTitle(e.target.value)}
@@ -84,24 +146,24 @@ export function CreatePost() {
               type="date"
               placeholder="Enter date"
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={e => handleChangeDate(e)}
             />
           </div>
           <br />
           <div className="form-group">
             <label>Description</label>
-            <textarea
+            <STextArea
               className="form-control"
               type="text"
               value={publisher}
               placeholder="Enter description"
               onChange={(e) => setPublisher(e.target.value)}
-            ></textarea>
+            />
           </div>
           <br />
           <div className="form-group">
             <label>Thumbnail</label>
-            <input className="form-control" type="file" />
+            <input className="form-control" type="file" onChange={handleImgPreview}/>
           </div>
           <br />
           <button
@@ -122,13 +184,13 @@ export function CreatePost() {
           <div className="row">
             <SImage
               className="img-fluid"
-              src={thumbnail}
+              src={imgPreview || sampleThumbnail}
               alt="Post Thumbnail"
             />
             <STitle className="text-capitalize">{title || "Post Title"}</STitle>
             <SAuthorDate>
               <p className="author">{author || "Post Author"}</p>
-              <p className="date">2023/02/25</p>
+              <p className="date">{date || "year/month/date"}</p>
             </SAuthorDate>
             <SContent>
               {publisher ||
@@ -144,6 +206,8 @@ export function CreatePost() {
 const SImage = styled.img`
   width: 100%;
   max-height: 250px;
+  border-radius: 20px;
+  object-fit: cover;
 `;
 
 const STitle = styled.h2`
@@ -175,3 +239,7 @@ const SContent = styled.p`
   font-size: 14px;
   margin-top: 10px;
 `;
+
+const STextArea = styled.textarea`
+  height: 200px;
+`

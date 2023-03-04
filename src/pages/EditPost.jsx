@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
 
 export function EditPost() {
-
   // Hiển thị danh sách bài viết
   const [posts, setPosts] = useState([]);
 
@@ -18,19 +17,23 @@ export function EditPost() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 10
+  const postsPerPage = 10;
 
   // Lấy ID bài viết người dùng muốn chỉnh sửa
   const [postId, setPostId] = useState(null);
 
   // Tuỳ chỉnh link sử dụng useNavigate
   const navigate = useNavigate();
-  
+
   // Gọi API
   const postsApi = "http://127.0.0.1:8000/api/books";
   const putPostApi = "http://127.0.0.1:8000/api/book";
-  
-  const [update, setUpdate] = useState();
+
+  const [update, setUpdate] = useState(false);
+
+  const [showAlertDeleteSuccess, setShowAlertDeleteSuccess] = useState(false);
+  const [showAlertDeleteCancel, setShowAlertDeleteCancel] = useState(false);
+  const [showAlertEditSuccess, setShowAlertEditSuccess] = useState(false);
 
   /**
    * ! Show Posts
@@ -38,22 +41,24 @@ export function EditPost() {
   useEffect(() => {
     fetch(postsApi)
       .then((response) => response.json())
-      .then((posts) => setPosts(posts));
+      .then((posts) => setPosts(posts.reverse()));
+
+    console.log("test api")
+
   }, [update]);
 
   // Cập nhật title
   useEffect(() => {
     document.title = "Edit Post Page";
-  },);
-
+  });
 
   /**
    * ! Delete Post
    */
   const deletePost = (id) => {
+
     if (
-      window.confirm("Bạn có chắc chắn muốn xoá bài viết đã chọn không ?") ===
-      true
+      window.confirm("Bạn có chắc chắn muốn xoá bài viết đã chọn không ?")
     ) {
       var options = {
         method: "DELETE",
@@ -61,13 +66,12 @@ export function EditPost() {
           "Content-Type": "application/json",
         },
       };
-      fetch(putPostApi + "/" + id, options)
-        .then((response) => response.json())
+      fetch(putPostApi + "/" + id, options).then((response) => response.json());
 
-      alert("Bài viết của bạn đã được xoá.");
-      setUpdate(Math.random());
+      setShowAlertDeleteSuccess(true)
+      setUpdate(!update)
     } else {
-      alert("Bạn đã huỷ việc xoá bài viết thành công.");
+      setShowAlertDeleteCancel(true)
     }
   };
 
@@ -116,15 +120,15 @@ export function EditPost() {
       }),
     };
     fetch(putPostApi + "/" + postId, options)
-      .then((response) => response.json())
-      .then(alert("Bài viết của bạn đã được cập nhật thành công."))
-      .then(setShowEditor(false));
+    .then((response) => response.json())
 
-    setTitle("");
-    setAuthor("");
-    setPublisher("");
-    setUpdate(Math.random());
-    setShowListPost(true);
+    setShowEditor(false)
+
+    setUpdate(!update)
+    setShowListPost(true)
+
+    setShowAlertEditSuccess(true)
+    
   };
 
   /**
@@ -171,8 +175,9 @@ export function EditPost() {
             </div>
             <br />
             <div className="form-group">
-              <label>Post Publisher</label>
-              <input
+              <label>Post Description</label>
+              <textarea
+              style={{height: "200px"}}
                 className="form-control"
                 type="text"
                 value={publisher}
@@ -205,6 +210,62 @@ export function EditPost() {
         </div>
       )}
 
+      {/* <!-- Alert Delete Success --> */}
+      {showAlertDeleteSuccess && (
+        <div>
+          <div
+            className="mt-5 mb-5 alert alert-success alert-dismissible fade show"
+            role="alert"
+          >
+             Bạn đã xoá bài viết thành công.
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setShowAlertDeleteSuccess(false)}
+            ></button>
+          </div>
+        </div>
+      )}
+      {/* <!-- Alert Delete Cancel --> */}
+      {showAlertDeleteCancel && (
+        <div>
+          <div
+            className="mt-5 mb-5 alert alert-primary alert-dismissible fade show"
+            role="alert"
+          >
+            Bạn đã huỷ thao tác xoá bài viết thành công.
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setShowAlertDeleteCancel(false)}
+            ></button>
+          </div>
+        </div>
+      )}
+
+      {/* <!-- Alert Edit Success --> */}
+      {showAlertEditSuccess && (
+        <div>
+          <div
+            className="mt-5 mb-5 alert alert-success alert-dismissible fade show"
+            role="alert"
+          >
+            Bạn đã chỉnh sửa bài viết thành công.
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setShowAlertEditSuccess(false)}
+            ></button>
+          </div>
+        </div>
+      )}
+
       {/* Hiển thị danh sách 10 bài viết trên một trang */}
       {showListPost && (
         <table className="table table-hover mt-3">
@@ -222,13 +283,22 @@ export function EditPost() {
             {currentPosts.map((post, index) => (
               <tr key={post.id}>
                 <th scope="row">{index + 1}</th>
-                <td>{post.title.length > 20 ? `${post.title.slice(0,30)} ...` : post.title}</td>
-                <td>{post.author}</td>
-                <td>{post.publisher.length > 90 ? `${post.publisher.slice(0,90)} ...` : post.publisher}</td>
                 <td>
+                  {post.title.length > 20
+                    ? `${post.title.slice(0, 30)} ...`
+                    : post.title}
+                </td>
+                <td>{post.author}</td>
+                <td>
+                  {post.publisher.length > 90
+                    ? `${post.publisher.slice(0, 90)} ...`
+                    : post.publisher}
+                </td>
+                <td>
+                  {/* <!-- Button trigger modal --> */}
                   <button
-                    style={{ margin: 5 }}
                     type="button"
+                    style={{ margin: 5 }}
                     className="btn btn-sm btn-danger"
                     onClick={() => deletePost(post.id)}
                   >

@@ -20,7 +20,7 @@ export function Login() {
     document.title = "Login Page";
   });
 
-  const [showAlert, setShowAlert] = useState(false)
+  const [showAlert, setShowAlert] = useState(false);
 
   const {
     handleSubmit,
@@ -35,10 +35,13 @@ export function Login() {
   const formSubmit = (data) => {
     const USERNAME_INFO = data.username;
     const PASSWORD_INFO = data.password;
-    if (USERNAME_INFO === "myblog-login@gmail.com" && PASSWORD_INFO === "1RxozVRIu8C") {
+    if (
+      USERNAME_INFO === "myblog-login@gmail.com" &&
+      PASSWORD_INFO === "1RxozVRIu8C"
+    ) {
       navigate("/admin/create");
     } else {
-      setShowAlert(true)
+      setShowAlert(true);
     }
   };
 
@@ -46,41 +49,37 @@ export function Login() {
     <section className="d-flex align-items-center justify-content-center vh-100">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
+          {showAlert && (
+              <div
+                className="mb-5 alert alert-warning alert-dismissible fade show"
+                role="alert"
+              >
+                <strong>Email hoặc Password bạn nhập không chính xác.</strong> Vui lòng thử lại để đăng nhập.
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                  onClick={() => setShowAlert(false)}
+                ></button>
+              </div>
+          )}
 
-          { showAlert && (
-            <div
-            className="alert alert-warning alert-dismissible fade show"
-            role="alert"
-          >
-            <strong>Holy guacamole!</strong> You should check in on some of
-            those fields below.
-            <button
-              type="button"
-              className="close"
-              data-dismiss="alert"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>)
-          }
-          
-
-          <div className="col-md-6">
+          <div className="col-lg-6 col-md-6">
             <img src={login} className="img-fluid" alt="Login" />
           </div>
 
-          <div className="col-md-6 offset-xl-1">
-            <h2 className="text-center mb-3">Login Form</h2>
+          <div className="col-lg-6 col-md-6">
+            <h2 className="text-center mb-3">Đăng nhập My Blog Admin</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
-              aspernatur saepe magnam culpa ipsum molestiae laborum quod earum
-              quam dignissimos?
+              Bạn vui lòng nhập Email address và Password để đăng nhập vào màn hình quản trị My Blog.
             </p>
             <form onSubmit={handleSubmit(formSubmit)}>
               {/* <!-- Email input --> */}
               <div className="form-outline mb-3">
-                <label className="form-label">Email address <SRequired>*</SRequired></label>
+                <label className="form-label">
+                  <b>Email address</b> <SRequired>*</SRequired>
+                </label>
                 <input
                   type="email"
                   className="form-control"
@@ -91,7 +90,9 @@ export function Login() {
               </div>
               {/* <!-- Password input --> */}
               <div className="form-outline mb-3">
-                <label className="form-label">Password <SRequired>*</SRequired></label>
+                <label className="form-label">
+                <b>Password</b> <SRequired>*</SRequired>
+                </label>
                 <input
                   type="password"
                   className="form-control"
@@ -120,4 +121,4 @@ const SError = styled.span`
 
 const SRequired = styled.span`
   color: #e74c3c;
-`
+`;

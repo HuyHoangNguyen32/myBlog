@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 import { Pagination } from "../components/Pagination";
 import thumbnail from "../assets/img/thumbnail.jpeg";
 
@@ -21,10 +22,12 @@ export function ListPosts() {
    * ! Show Posts
    */
   useEffect(() => {
-    fetch(postsApi)
-      .then((response) => response.json())
-      .then((posts) => setPosts(posts));
-  }, []);
+    const fetchPosts = async () => {
+      const res = await axios.get(postsApi)
+      setPosts(res.data.reverse())
+    }
+    fetchPosts()
+  },[])
 
   // Cập nhật title
   useEffect(() => {
@@ -53,6 +56,8 @@ export function ListPosts() {
           <SForm className="form-inline">
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
           </SForm>
+
+          {console.log(currentPosts)}
 
           {currentPosts.map((post) => (
             <div key={post.id} className="col-sm-6 col-md-3 my-2">
