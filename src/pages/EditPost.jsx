@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
+import axios from "axios";
 
 export function EditPost() {
   // Hiển thị danh sách bài viết
@@ -9,7 +10,8 @@ export function EditPost() {
   // Cập nhật thông tin bài viết
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [publisher, setPublisher] = useState("");
+  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
 
   // Ẩn hiện Editor và danh sách bài viết
   const [showEditor, setShowEditor] = useState(false);
@@ -22,12 +24,15 @@ export function EditPost() {
   // Lấy ID bài viết người dùng muốn chỉnh sửa
   const [postId, setPostId] = useState(null);
 
+  // Keyword
+  const [keyword, setKeyword] = useState("");
+
   // Tuỳ chỉnh link sử dụng useNavigate
   const navigate = useNavigate();
 
   // Gọi API
-  const postsApi = "http://127.0.0.1:8000/api/books";
-  const putPostApi = "http://127.0.0.1:8000/api/book";
+  const postsApi = "http://127.0.0.1:8000/api/posts";
+  const putPostApi = "http://127.0.0.1:8000/api/posts";
 
   const [update, setUpdate] = useState(false);
 
@@ -42,9 +47,6 @@ export function EditPost() {
     fetch(postsApi)
       .then((response) => response.json())
       .then((posts) => setPosts(posts.reverse()));
-
-    console.log("test api")
-
   }, [update]);
 
   // Cập nhật title
@@ -56,10 +58,7 @@ export function EditPost() {
    * ! Delete Post
    */
   const deletePost = (id) => {
-
-    if (
-      window.confirm("Bạn có chắc chắn muốn xoá bài viết đã chọn không ?")
-    ) {
+    if (window.confirm("Bạn có chắc chắn muốn xoá bài viết đã chọn không ?")) {
       var options = {
         method: "DELETE",
         headers: {
@@ -68,10 +67,10 @@ export function EditPost() {
       };
       fetch(putPostApi + "/" + id, options).then((response) => response.json());
 
-      setShowAlertDeleteSuccess(true)
-      setUpdate(!update)
+      setShowAlertDeleteSuccess(true);
+      setUpdate(!update);
     } else {
-      setShowAlertDeleteCancel(true)
+      setShowAlertDeleteCancel(true);
     }
   };
 
@@ -100,7 +99,8 @@ export function EditPost() {
         return (
           setTitle(post.title),
           setAuthor(post.author),
-          setPublisher(post.publisher)
+          setDate(post.date),
+          setDescription(post.description)
         );
       });
     setShowEditor(true);
@@ -116,19 +116,30 @@ export function EditPost() {
       body: JSON.stringify({
         title,
         author,
-        publisher,
+        description,
       }),
     };
-    fetch(putPostApi + "/" + postId, options)
-    .then((response) => response.json())
+    fetch(putPostApi + "/" + postId, options).then((response) =>
+      response.json()
+    );
 
-    setShowEditor(false)
+    setShowEditor(false);
 
-    setUpdate(!update)
-    setShowListPost(true)
+    setUpdate(!update);
+    setShowListPost(true);
 
-    setShowAlertEditSuccess(true)
-    
+    setShowAlertEditSuccess(true);
+  };
+
+  // Search
+  const searchPostApi = `http://127.0.0.1:8000/api/posts/search/${keyword}`;
+  const handelSearch = () => {
+    const fetchPosts = async () => {
+      const res = await axios.get(searchPostApi);
+      setPosts(res.data);
+    };
+    fetchPosts();
+    // navigate(`/posts/admin/search/${keyword}`);
   };
 
   /**
@@ -146,43 +157,50 @@ export function EditPost() {
 
   return (
     <div style={{ marginTop: 80, paddingBottom: 80 }}>
-      <h2>Edit Posts</h2>
+      <h2 style={{marginBottom: "25px"}}>Xoá hoặc sửa bài viết</h2>
 
       {/* Hiển thị Editor để chỉnh sửa bài viết */}
       {showEditor && (
         <div>
           <form>
             <div className="form-group">
-              <label>Post Title</label>
+              <label><b>Tiêu đề</b></label>
               <input
                 className="form-control"
                 type="text"
                 value={title}
-                placeholder="Enter title"
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
             <br />
             <div className="form-group">
-              <label>Post Author</label>
+              <label><b>Tác giả</b></label>
               <input
                 className="form-control"
                 type="text"
                 value={author}
-                placeholder="Enter author"
                 onChange={(e) => setAuthor(e.target.value)}
               />
             </div>
             <br />
             <div className="form-group">
-              <label>Post Description</label>
-              <textarea
-              style={{height: "200px"}}
+              <label><b>Ngày tháng đăng</b></label>
+              <input
                 className="form-control"
                 type="text"
-                value={publisher}
-                placeholder="Enter publisher"
-                onChange={(e) => setPublisher(e.target.value)}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+            <br />
+            <div className="form-group">
+              <label><b>Đoạn trích dẫn</b></label>
+              <textarea
+                style={{ height: "200px" }}
+                className="form-control"
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
           </form>
@@ -196,14 +214,14 @@ export function EditPost() {
               setShowListPost(true);
             }}
           >
-            Cancel
+            Huỷ bỏ
           </button>
           <button
             type="button"
             className="btn btn-sm btn-primary"
             onClick={submitEditPost}
           >
-            Submit
+            Cập nhật bài viết
           </button>
           <br />
           <br />
@@ -217,7 +235,7 @@ export function EditPost() {
             className="mt-5 mb-5 alert alert-success alert-dismissible fade show"
             role="alert"
           >
-             Bạn đã xoá bài viết thành công.
+            Bạn đã xoá bài viết thành công.
             <button
               type="button"
               className="btn-close"
@@ -268,58 +286,80 @@ export function EditPost() {
 
       {/* Hiển thị danh sách 10 bài viết trên một trang */}
       {showListPost && (
-        <table className="table table-hover mt-3">
-          <thead>
-            <tr className="table-primary">
-              <th scope="col">No</th>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Description</th>
-              <th scope="col">Button</th>
-            </tr>
-          </thead>
+        <div>
+          <div className="input-group input-group-sm mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Nhập từ khoá cho tiêu đề bài viết"
+              aria-label="Small"
+              aria-describedby="inputGroup-sizing-sm"
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <div className="input-group-prepend">
+              <span
+                className="input-group-text"
+                id="inputGroup-sizing-sm"
+                onClick={handelSearch}
+              >
+                Tìm kiếm
+              </span>
+            </div>
+          </div>
 
-          <tbody>
-            {currentPosts.map((post, index) => (
-              <tr key={post.id}>
-                <th scope="row">{index + 1}</th>
-                <td>
-                  {post.title.length > 20
-                    ? `${post.title.slice(0, 30)} ...`
-                    : post.title}
-                </td>
-                <td>{post.author}</td>
-                <td>
-                  {post.publisher.length > 90
-                    ? `${post.publisher.slice(0, 90)} ...`
-                    : post.publisher}
-                </td>
-                <td>
-                  {/* <!-- Button trigger modal --> */}
-                  <button
-                    type="button"
-                    style={{ margin: 5 }}
-                    className="btn btn-sm btn-danger"
-                    onClick={() => deletePost(post.id)}
-                  >
-                    Delete
-                  </button>
-
-                  <button
-                    style={{ margin: 5 }}
-                    type="button"
-                    className="btn btn-sm btn-warning"
-                    onClick={() => {
-                      handleClickEditPost(post.id);
-                    }}
-                  >
-                    Edit
-                  </button>
-                </td>
+          <table className="table table-hover mt-3">
+            <thead>
+              <tr className="table-primary">
+                <th scope="col">No</th>
+                <th scope="col">Tiêu đề</th>
+                <th scope="col">Tác giả</th>
+                <th scope="col">Trích dẫn</th>
+                <th scope="col">Thao tác</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {currentPosts.map((post, index) => (
+                <tr key={post.id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>
+                    {post.title.length > 20
+                      ? `${post.title.slice(0, 30)} ...`
+                      : post.title}
+                  </td>
+                  <td>{post.author}</td>
+                  <td>
+                    {post.description.length > 90
+                      ? `${post.description.slice(0, 90)} ...`
+                      : post.description}
+                  </td>
+                  <td>
+                    {/* <!-- Button trigger modal --> */}
+                    <button
+                      type="button"
+                      style={{ margin: 5 }}
+                      className="btn btn-sm btn-danger"
+                      onClick={() => deletePost(post.id)}
+                    >
+                      Delete
+                    </button>
+
+                    <button
+                      style={{ margin: 5 }}
+                      type="button"
+                      className="btn btn-sm btn-warning"
+                      onClick={() => {
+                        handleClickEditPost(post.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* Hiển thị pagination */}

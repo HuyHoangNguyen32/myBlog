@@ -7,7 +7,7 @@ export function Post() {
   const { id } = useParams();
   const [post, setPost] = useState([]);
 
-  const postApi = `http://127.0.0.1:8000/api/book/${id}`;
+  const postApi = `http://127.0.0.1:8000/api/posts/${id}`;
 
   useEffect(() => {
     fetch(postApi)
@@ -27,9 +27,9 @@ export function Post() {
         <STitle className="text-capitalize">{post.title}</STitle>
         <SAuthorDate>
           <p className="author">{post.author}</p>
-          <p className="date">2023/02/25</p>
+          <p className="date">{post.date}</p>
         </SAuthorDate>
-        <SContent>{post.publisher}</SContent>
+        <SContent>{post.description}</SContent>
       </div>
     </div>
   );
@@ -37,7 +37,9 @@ export function Post() {
 
 const SImage = styled.img`
   width: 100%;
-  max-height: 250px; 
+  max-height: 250px;
+  border-radius: 20px;
+  object-fit: cover;
 `;
 
 const STitle = styled.h2`
@@ -68,6 +70,11 @@ const SAuthorDate = styled.div`
 const SContent = styled.p`
   font-size: 14px;
   margin-top: 10px;
+  ::first-letter {
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
 `;
 
 

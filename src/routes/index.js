@@ -29,6 +29,11 @@ export const Routers = () => {
 
         <Route path="/posts" element={<GlobalLayout/>}>
           <Route path=":id" element={<ListPosts />} />
+          {/* <Route path="/search/:keyword" element={<ListPosts />} /> */}
+        </Route>
+
+        <Route path="/posts/search" element={<GlobalLayout/>}>
+          <Route path=":keyword" element={<ListPosts />} />
         </Route>
 
         <Route path="/post" element={<GlobalLayout/>}>
