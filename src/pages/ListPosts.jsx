@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { Pagination } from "../components/Pagination";
-import thumbnail from "../assets/img/thumbnail.jpeg";
+// import thumbnail from "../assets/img/thumbnail.jpeg";
 
 export function ListPosts() {
   // Hiển thị danh sách bài viết
@@ -29,6 +29,7 @@ export function ListPosts() {
     const fetchPosts = async () => {
       const res = await axios.get(postsApi);
       setPosts(res.data.reverse());
+      console.log(res.data);
     };
     fetchPosts();
   }, []);
@@ -91,7 +92,7 @@ export function ListPosts() {
               <div className="card shadow-sm w-100" style={{ minHeight: 225 }}>
                 <img
                   className="card-img-top"
-                  src={thumbnail}
+                  src={`http://127.0.0.1:8000/uploads/images/${post.thumbnail}`}
                   alt="Posts Thumbnail"
                 />
                 <div className="card-body">

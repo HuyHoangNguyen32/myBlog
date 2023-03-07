@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import thumbnail from "../assets/img/post-detail-thumbnail.jpeg";
 
 export function Post() {
   const { id } = useParams();
@@ -23,7 +22,7 @@ export function Post() {
   return (
     <div className="container" style={{ paddingTop: 80 }}>
       <div className="row">
-        <SImage className="img-fluid" src={thumbnail} alt="Post Thumbnail" />
+        <SImage className="img-fluid" src={`http://127.0.0.1:8000/uploads/images/${post.thumbnail}`} alt="Post Thumbnail" />
         <STitle className="text-capitalize">{post.title}</STitle>
         <SAuthorDate>
           <p className="author">{post.author}</p>

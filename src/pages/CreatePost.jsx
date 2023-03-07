@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import sampleThumbnail from "../assets/img/post-detail-thumbnail.jpeg";
 
 export function CreatePost() {
@@ -10,14 +9,16 @@ export function CreatePost() {
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlertFileSize, setShowAlertFileSize] = useState(false);
 
   // Thumbnail State
-  const [thumbnail, setThumbnail] = useState(null);
-  const [imgPreview, setImgPreview] = useState(null);
+  // const [thumbnail, setThumbnail] = useState(null);
+  const [imgPreview, setImgPreview] = useState();
 
   const [image, setImage] = useState(null);
 
   const titleRef = useRef();
+  const imageRef = useRef();
 
   const putPostApi = "http://127.0.0.1:8000/api/posts";
 
@@ -31,35 +32,30 @@ export function CreatePost() {
    */
   const publicPost = () => {
     const formData = new FormData();
-    formData.append("image", image);
-
-    console.log(formData)
+    formData.append("title", title);
+    formData.append("author", author);
+    formData.append("date", date);
+    formData.append("description", description);
+    formData.append("thumbnail", image);
 
     var options = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        author,
-        date,
-        description,
-      }),
+      body: formData,
     };
 
     fetch(putPostApi, options)
       .then((response) => response.json())
-      .then(setShowAlert(true));
-
-    axios.post(putPostApi, formData)
-      .then((response) => console.log(response));
+      .then(setShowAlert(true))
+      .catch((err) => console.log(err));
 
     // Reset thông tin trên các ô input
     setTitle("");
     setAuthor("");
     setDescription("");
     setDate("");
+
+    // Đặt lại giá trị cho input type=file sau khi đăng bài
+    imageRef.current.value = null;
 
     // Sau khi người dùng nhấn nút Public và gửi thông tin bài viết đi thì input Title sẽ được focus để người dùng tiếp tục nhập
     titleRef.current.focus();
@@ -68,7 +64,7 @@ export function CreatePost() {
   // Hiển thị hình ảnh người dùng upload tại bài viết mẫu
   const handleImgPreview = (e) => {
     const fileSelected = e.target.files[0];
-    setThumbnail(fileSelected);
+    // setThumbnail(fileSelected);
     setImage(fileSelected);
 
     let reader = new FileReader();
@@ -76,6 +72,19 @@ export function CreatePost() {
       setImgPreview(reader.result);
     };
     reader.readAsDataURL(fileSelected);
+  };
+
+  // Giới hạn dung lượng ảnh được upload
+  const sizeLimit = 1024 * 1024 * 1;
+  const handleFileSelect = (e) => {
+    const fileSelected = e.target.files[0];
+    if (fileSelected.size > sizeLimit) {
+      setShowAlertFileSize(true);
+      // Đặt lại giá trị cho input type=file sau khi đăng bài
+      imageRef.current.value = null;
+    } else {
+      handleImgPreview(e);
+    }
   };
 
   return (
@@ -101,9 +110,27 @@ export function CreatePost() {
         </div>
       )}
 
+      {showAlertFileSize && (
+        <div>
+          <div
+            className="mt-5 mb-5 alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>Vui lòng tải hình ảnh có dung lượng nhỏ hơn 1MB.</strong>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setShowAlert(false)}
+            ></button>
+          </div>
+        </div>
+      )}
+
       <div className="mt-3">
         {/* Form nhập thông tin bài viết */}
-        <form>
+        <form encType="multipart/form-data">
           <div className="form-group">
             <label className="form-label">Title</label>
             <input
@@ -153,9 +180,11 @@ export function CreatePost() {
           <div className="form-group">
             <label>Thumbnail</label>
             <input
+              ref={imageRef}
               className="form-control"
               type="file"
-              onChange={handleImgPreview}
+              accept="image/*"
+              onChange={handleFileSelect}
             />
           </div>
           <br />
