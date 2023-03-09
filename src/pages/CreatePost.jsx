@@ -20,7 +20,7 @@ export function CreatePost() {
   const titleRef = useRef();
   const imageRef = useRef();
 
-  const putPostApi = "http://127.0.0.1:8000/api/posts";
+  const putPostApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
 
   // Cập nhật title
   useEffect(() => {
@@ -28,8 +28,7 @@ export function CreatePost() {
   });
 
   /**
-   * ! Gửi thông tin bài viết người dùng tạo lên Database
-   */
+   * ! Gửi thông tin bài viết người dùng tạo lên Database */
   const publicPost = () => {
     const formData = new FormData();
     formData.append("title", title);
@@ -53,6 +52,7 @@ export function CreatePost() {
     setAuthor("");
     setDescription("");
     setDate("");
+    setImgPreview(null);
 
     // Đặt lại giá trị cho input type=file sau khi đăng bài
     imageRef.current.value = null;
@@ -99,24 +99,6 @@ export function CreatePost() {
             role="alert"
           >
             <strong>Xin chúc mừng!</strong> Bài viết của bạn đã được công bố.
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              onClick={() => setShowAlert(false)}
-            ></button>
-          </div>
-        </div>
-      )}
-
-      {showAlertFileSize && (
-        <div>
-          <div
-            className="mt-5 mb-5 alert alert-danger alert-dismissible fade show"
-            role="alert"
-          >
-            <strong>Vui lòng tải hình ảnh có dung lượng nhỏ hơn 1MB.</strong>
             <button
               type="button"
               className="btn-close"
@@ -186,6 +168,9 @@ export function CreatePost() {
               accept="image/*"
               onChange={handleFileSelect}
             />
+            {showAlertFileSize && 
+              <SShowAlertFileSize className="text-danger">* Vui lòng tải hình ảnh có dung lượng dưới 1MB</SShowAlertFileSize>
+            }
           </div>
           <br />
           <button
@@ -225,8 +210,13 @@ export function CreatePost() {
   );
 }
 
+const SShowAlertFileSize = styled.p`
+  font-size: 14px;
+  margin-top: 8px;
+`;
+
 const SDateInfo = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 5px;
 `;
 

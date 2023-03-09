@@ -31,8 +31,8 @@ export function EditPost() {
   const navigate = useNavigate();
 
   // Gọi API
-  const postsApi = "http://127.0.0.1:8000/api/posts";
-  const putPostApi = "http://127.0.0.1:8000/api/posts";
+  const postsApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
+  const putPostApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
 
   const [update, setUpdate] = useState(false);
 
@@ -132,7 +132,7 @@ export function EditPost() {
   };
 
   // Search
-  const searchPostApi = `http://127.0.0.1:8000/api/posts/search/${keyword}`;
+  const searchPostApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/search/${keyword}`;
   const handelSearch = () => {
     const fetchPosts = async () => {
       const res = await axios.get(searchPostApi);

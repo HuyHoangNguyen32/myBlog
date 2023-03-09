@@ -6,7 +6,7 @@ export function Post() {
   const { id } = useParams();
   const [post, setPost] = useState([]);
 
-  const postApi = `http://127.0.0.1:8000/api/posts/${id}`;
+  const postApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/${id}`;
 
   useEffect(() => {
     fetch(postApi)
@@ -22,7 +22,7 @@ export function Post() {
   return (
     <div className="container" style={{ paddingTop: 80 }}>
       <div className="row">
-        <SImage className="img-fluid" src={`http://127.0.0.1:8000/uploads/images/${post.thumbnail}`} alt="Post Thumbnail" />
+        <SImage className="img-fluid" src={`http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/uploads/images/${post.thumbnail}`} alt="Post Thumbnail" />
         <STitle className="text-capitalize">{post.title}</STitle>
         <SAuthorDate>
           <p className="author">{post.author}</p>

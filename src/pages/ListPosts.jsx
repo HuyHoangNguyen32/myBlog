@@ -19,8 +19,8 @@ export function ListPosts() {
   // Tuỳ chỉnh link sử dụng useNavigate
   const navigate = useNavigate();
 
-  const postsApi = "http://127.0.0.1:8000/api/posts";
-  const searchPostApi = `http://127.0.0.1:8000/api/posts/search/${keyword}`;
+  const postsApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
+  const searchPostApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/search/${keyword}`;
 
   /**
    * ! Show Posts
@@ -92,7 +92,7 @@ export function ListPosts() {
               <div className="card shadow-sm w-100" style={{ minHeight: 225 }}>
                 <img
                   className="card-img-top"
-                  src={`http://127.0.0.1:8000/uploads/images/${post.thumbnail}`}
+                  src={`http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/uploads/images/${post.thumbnail}`}
                   alt="Posts Thumbnail"
                 />
                 <div className="card-body">
