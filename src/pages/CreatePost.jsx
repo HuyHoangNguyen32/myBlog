@@ -2,34 +2,39 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import sampleThumbnail from "../assets/img/post-detail-thumbnail.jpeg";
 
-export function CreatePost() {
-  // Cập nhật title, author, description
+export default function CreatePost() {
+
+  // State
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
+
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertFileSize, setShowAlertFileSize] = useState(false);
 
-  // Thumbnail State
-  // const [thumbnail, setThumbnail] = useState(null);
   const [imgPreview, setImgPreview] = useState();
-
   const [image, setImage] = useState(null);
 
   const titleRef = useRef();
   const imageRef = useRef();
 
+  // API
   const putPostApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
 
-  // Cập nhật title
+  /**
+   * ! Cập nhật tiêu đề trang
+   */
   useEffect(() => {
     document.title = "Create Post Page";
   });
 
   /**
-   * ! Gửi thông tin bài viết người dùng tạo lên Database */
+   * ! Gửi thông tin bài viết người dùng tạo lên Database
+   */
   const publicPost = () => {
+
+    // Lấy dữ liệu gửi đi
     const formData = new FormData();
     formData.append("title", title);
     formData.append("author", author);
@@ -37,17 +42,19 @@ export function CreatePost() {
     formData.append("description", description);
     formData.append("thumbnail", image);
 
+    // Dữ liệu sẽ được gửi đi
     var options = {
       method: "POST",
       body: formData,
     };
 
+    // Gửi dữ liệu đi
     fetch(putPostApi, options)
       .then((response) => response.json())
       .then(setShowAlert(true))
       .catch((err) => console.log(err));
 
-    // Reset thông tin trên các ô input
+    // Reset thông tin trên các ô input và hình ảnh mẫu
     setTitle("");
     setAuthor("");
     setDescription("");
@@ -61,7 +68,9 @@ export function CreatePost() {
     titleRef.current.focus();
   };
 
-  // Hiển thị hình ảnh người dùng upload tại bài viết mẫu
+  /**
+   * ! Hiển thị hình ảnh người dùng upload tại bài viết mẫu
+   */
   const handleImgPreview = (e) => {
     const fileSelected = e.target.files[0];
     // setThumbnail(fileSelected);
@@ -74,7 +83,9 @@ export function CreatePost() {
     reader.readAsDataURL(fileSelected);
   };
 
-  // Giới hạn dung lượng ảnh được upload
+  /**
+   * ! Giới hạn dung lượng ảnh được upload
+   */
   const sizeLimit = 1024 * 1024 * 1;
   const handleFileSelect = (e) => {
     const fileSelected = e.target.files[0];
@@ -91,7 +102,7 @@ export function CreatePost() {
     <div style={{ paddingTop: 80, paddingBottom: 80 }}>
       <h2>Tạo và công bố bài viết của bạn</h2>
 
-      {/* <!-- Alert --> */}
+      {/* Alert công bố bài viết thành công */}
       {showAlert && (
         <div>
           <div
@@ -114,53 +125,53 @@ export function CreatePost() {
         {/* Form nhập thông tin bài viết */}
         <form encType="multipart/form-data">
           <div className="form-group">
-            <label className="form-label">Title</label>
+            <label className="form-label">Tiêu đề</label>
             <input
               className="form-control"
               type="text"
               value={title}
-              placeholder="Enter title"
+              placeholder="Nhập tiêu đề"
               onChange={(e) => setTitle(e.target.value)}
               ref={titleRef}
             />
           </div>
           <br />
           <div className="form-group">
-            <label>Author</label>
+            <label>Tác giả</label>
             <input
               className="form-control"
               type="text"
               value={author}
-              placeholder="Enter author"
+              placeholder="Nhập tên tác giả"
               onChange={(e) => setAuthor(e.target.value)}
             />
           </div>
           <br />
           <div className="form-group">
-            <label>Date</label>
+            <label>Ngày tháng năm</label>
             <input
               className="form-control"
               type="text"
-              placeholder="Enter date"
+              placeholder="Nhập ngày tháng năm"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
-            <SDateInfo className="text-info">Ex: 2022/07/31</SDateInfo>
+            <SDateInfo className="text-info">Ví dụ: 31/07/2020</SDateInfo>
           </div>
 
           <div className="form-group">
-            <label>Description</label>
+            <label>Trích dẫn</label>
             <STextArea
               className="form-control"
               type="text"
               value={description}
-              placeholder="Enter description"
+              placeholder="Nhập trích dẫn"
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <br />
           <div className="form-group">
-            <label>Thumbnail</label>
+            <label>Ảnh đại diện</label>
             <input
               ref={imageRef}
               className="form-control"
@@ -175,14 +186,16 @@ export function CreatePost() {
           <br />
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-sm"
             onClick={publicPost}
           >
-            Publish
+            Công bố bài viết
           </button>
         </form>
 
+
         <br />
+        <h5>Dưới đây là bài viết mẫu mà bạn vừa nhập ở trên.</h5>
         <hr />
         <br />
 
@@ -194,10 +207,10 @@ export function CreatePost() {
               src={imgPreview || sampleThumbnail}
               alt="Post Thumbnail"
             />
-            <STitle className="text-capitalize">{title || "Post Title"}</STitle>
+            <STitle className="text-capitalize">{title || "Tiêu đề"}</STitle>
             <SAuthorDate>
-              <p className="author">{author || "Post Author"}</p>
-              <p className="date">{date || "year/month/date"}</p>
+              <p className="author">{author || "Tác giả"}</p>
+              <p className="date">{date || "Ngày/tháng/năm"}</p>
             </SAuthorDate>
             <SContent>
               {description ||
@@ -263,5 +276,5 @@ const SContent = styled.p`
 `;
 
 const STextArea = styled.textarea`
-  height: 200px;
+  height: 100px;
 `;

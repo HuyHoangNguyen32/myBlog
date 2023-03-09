@@ -1,61 +1,70 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Pagination } from "../components/Pagination";
 import axios from "axios";
+import styled from "styled-components";
+import { Pagination } from "../components/Pagination";
 
-export function EditPost() {
-  // Hiển thị danh sách bài viết
+export default function EditPost() {
+  // State
   const [posts, setPosts] = useState([]);
 
-  // Cập nhật thông tin bài viết
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
-  // Ẩn hiện Editor và danh sách bài viết
   const [showEditor, setShowEditor] = useState(false);
   const [showListPost, setShowListPost] = useState(true);
 
-  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
 
-  // Lấy ID bài viết người dùng muốn chỉnh sửa
-  const [postId, setPostId] = useState(null);
+  const [postId, setPostId] = useState(null); // Lấy ID bài viết user muốn chỉnh sửa
 
-  // Keyword
-  const [keyword, setKeyword] = useState("");
-
-  // Tuỳ chỉnh link sử dụng useNavigate
-  const navigate = useNavigate();
-
-  // Gọi API
-  const postsApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
-  const putPostApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
-
-  const [update, setUpdate] = useState(false);
+  const [keyword, setKeyword] = useState(""); // Lấy từ khoá tìm kiếm user nhập
 
   const [showAlertDeleteSuccess, setShowAlertDeleteSuccess] = useState(false);
   const [showAlertDeleteCancel, setShowAlertDeleteCancel] = useState(false);
   const [showAlertEditSuccess, setShowAlertEditSuccess] = useState(false);
 
-  /**
-   * ! Show Posts
-   */
-  useEffect(() => {
-    fetch(postsApi)
-      .then((response) => response.json())
-      .then((posts) => setPosts(posts.reverse()));
-  }, [update]);
+  const navigate = useNavigate();
 
-  // Cập nhật title
+  // API
+  const postsApi =
+    "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
+  const putPostApi =
+    "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
+  const searchPostApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/search/${keyword}`;
+
+  /**
+   * ! Cập nhật tiêu đề trang
+   */
   useEffect(() => {
     document.title = "Edit Post Page";
   });
 
   /**
-   * ! Delete Post
+   * ! Tìm kiếm bài viết theo tiêu đề
+   */
+  const handelSearch = () => {
+    const fetchPosts = async () => {
+      const res = await axios.get(searchPostApi);
+      setPosts(res.data);
+    };
+    fetchPosts();
+  };
+
+  /**
+   * ! Hiển thị danh sách bài viết
+   */
+  useEffect(() => {
+    fetch(postsApi)
+      .then((response) => response.json())
+      .then((posts) => setPosts(posts.reverse()));
+  }, []);
+
+  /**
+   * ! Xoá bài viết khi user nhấn nút "Xoá"
    */
   const deletePost = (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xoá bài viết đã chọn không ?")) {
@@ -68,16 +77,14 @@ export function EditPost() {
       fetch(putPostApi + "/" + id, options).then((response) => response.json());
 
       setShowAlertDeleteSuccess(true);
-      setUpdate(!update);
     } else {
       setShowAlertDeleteCancel(true);
     }
   };
 
   /**
-   * ! Edit Post
+   * ! Logic diễn ra khi nhấn nút "Sửa"
    */
-  // Logic diễn ra khi nhấn nút Edit
   function handleClickEditPost(postID) {
     getEditPost(postID);
     setPostId(postID);
@@ -85,7 +92,9 @@ export function EditPost() {
     setShowListPost(false);
   }
 
-  // Hiển thị thông tin bài viết người dùng muốn chỉnh sửa vào editor
+  /**
+   * ! Hiển thị bài viết cần sửa ra editor
+   */
   const getEditPost = (id) => {
     var options = {
       method: "GET",
@@ -106,8 +115,12 @@ export function EditPost() {
     setShowEditor(true);
   };
 
-  // Cập nhật bài post khi người dùng nhấn nút Submit
+  /**
+   * ! Cập nhật bài post khi người dùng nhấn nút "Cập nhật bài viết"
+   */
   const submitEditPost = () => {
+
+    // Dữ liệu gửi đi
     var options = {
       method: "PUT",
       headers: {
@@ -116,55 +129,47 @@ export function EditPost() {
       body: JSON.stringify({
         title,
         author,
+        date,
         description,
       }),
     };
+
+    // Gửi dũ liệu đi
     fetch(putPostApi + "/" + postId, options).then((response) =>
       response.json()
     );
 
+    // Reset lại trạng thái ban đầu và hiển thị alert
     setShowEditor(false);
-
-    setUpdate(!update);
     setShowListPost(true);
-
     setShowAlertEditSuccess(true);
   };
 
-  // Search
-  const searchPostApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/search/${keyword}`;
-  const handelSearch = () => {
-    const fetchPosts = async () => {
-      const res = await axios.get(searchPostApi);
-      setPosts(res.data);
-    };
-    fetchPosts();
-    // navigate(`/posts/admin/search/${keyword}`);
-  };
-
   /**
-   * ! Pagination
+   * ! Chức năng phân trang mỗi trang 10 bài viết
    */
-  // Tuỳ chỉnh sao cho link thay đổi tương ứng khi người dùng thay đổi trang
+  // Lấy thông tin trang người dùng đang chọn
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
     navigate(`/admin/edit/${pageNumber}`);
   };
-  // Lấy ra danh sách bài viết hiện tại
+  // Lấy số bài viết trên trang hiện tại
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
     <div style={{ marginTop: 80, paddingBottom: 80 }}>
-      <h2 style={{marginBottom: "25px"}}>Xoá hoặc sửa bài viết</h2>
+      <h2 style={{ marginBottom: "25px" }}>Xoá hoặc sửa bài viết</h2>
 
       {/* Hiển thị Editor để chỉnh sửa bài viết */}
       {showEditor && (
         <div>
           <form>
             <div className="form-group">
-              <label><b>Tiêu đề</b></label>
+              <label>
+                <b>Tiêu đề</b>
+              </label>
               <input
                 className="form-control"
                 type="text"
@@ -174,7 +179,9 @@ export function EditPost() {
             </div>
             <br />
             <div className="form-group">
-              <label><b>Tác giả</b></label>
+              <label>
+                <b>Tác giả</b>
+              </label>
               <input
                 className="form-control"
                 type="text"
@@ -184,7 +191,9 @@ export function EditPost() {
             </div>
             <br />
             <div className="form-group">
-              <label><b>Ngày tháng đăng</b></label>
+              <label>
+                <b>Ngày tháng đăng</b>
+              </label>
               <input
                 className="form-control"
                 type="text"
@@ -194,9 +203,11 @@ export function EditPost() {
             </div>
             <br />
             <div className="form-group">
-              <label><b>Đoạn trích dẫn</b></label>
+              <label>
+                <b>Đoạn trích dẫn</b>
+              </label>
               <textarea
-                style={{ height: "200px" }}
+                style={{ height: "100px" }}
                 className="form-control"
                 type="text"
                 value={description}
@@ -228,7 +239,7 @@ export function EditPost() {
         </div>
       )}
 
-      {/* <!-- Alert Delete Success --> */}
+      {/* Alert Delete Success */}
       {showAlertDeleteSuccess && (
         <div>
           <div
@@ -246,7 +257,7 @@ export function EditPost() {
           </div>
         </div>
       )}
-      {/* <!-- Alert Delete Cancel --> */}
+      {/* Alert Delete Cancel */}
       {showAlertDeleteCancel && (
         <div>
           <div
@@ -265,7 +276,7 @@ export function EditPost() {
         </div>
       )}
 
-      {/* <!-- Alert Edit Success --> */}
+      {/* Alert Edit Success */}
       {showAlertEditSuccess && (
         <div>
           <div
@@ -297,13 +308,13 @@ export function EditPost() {
               onChange={(e) => setKeyword(e.target.value)}
             />
             <div className="input-group-prepend">
-              <span
+              <SSearch
                 className="input-group-text"
                 id="inputGroup-sizing-sm"
                 onClick={handelSearch}
               >
                 Tìm kiếm
-              </span>
+              </SSearch>
             </div>
           </div>
 
@@ -319,6 +330,7 @@ export function EditPost() {
             </thead>
 
             <tbody>
+              {/* Danh sách bài viết */}
               {currentPosts.map((post, index) => (
                 <tr key={post.id}>
                   <th scope="row">{index + 1}</th>
@@ -334,16 +346,17 @@ export function EditPost() {
                       : post.description}
                   </td>
                   <td>
-                    {/* <!-- Button trigger modal --> */}
+                    {/* Delete Post */}
                     <button
                       type="button"
                       style={{ margin: 5 }}
                       className="btn btn-sm btn-danger"
                       onClick={() => deletePost(post.id)}
                     >
-                      Delete
+                      Xoá
                     </button>
-
+                    
+                    {/* Edit Post */}
                     <button
                       style={{ margin: 5 }}
                       type="button"
@@ -352,7 +365,7 @@ export function EditPost() {
                         handleClickEditPost(post.id);
                       }}
                     >
-                      Edit
+                      Sửa
                     </button>
                   </td>
                 </tr>
@@ -362,7 +375,6 @@ export function EditPost() {
         </div>
       )}
 
-      {/* Hiển thị pagination */}
       {showListPost && (
         <Pagination
           postsPerPage={postsPerPage}
@@ -373,3 +385,9 @@ export function EditPost() {
     </div>
   );
 }
+
+const SSearch = styled.span`
+  :hover {
+    cursor: pointer;
+  }
+`;

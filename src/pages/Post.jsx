@@ -2,22 +2,29 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-export function Post() {
+export default function Post() {
+
   const { id } = useParams();
   const [post, setPost] = useState([]);
 
+  // API
   const postApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/${id}`;
 
+  /**
+   * ! Cập nhật tiêu đề trang
+   */
+  useEffect(() => {
+    document.title = post.title;
+  });
+
+  /**
+   * ! Hiển thị thông tin chi tiết bài viết
+   */
   useEffect(() => {
     fetch(postApi)
       .then((response) => response.json())
       .then((post) => setPost(post));
   }, [postApi]);
-
-  // Cập nhật title
-  useEffect(() => {
-    document.title = post.title;
-  });
 
   return (
     <div className="container" style={{ paddingTop: 80 }}>

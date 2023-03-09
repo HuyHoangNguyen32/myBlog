@@ -1,29 +1,44 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import axios from "axios";
+import styled from "styled-components";
 import { Pagination } from "../components/Pagination";
-// import thumbnail from "../assets/img/thumbnail.jpeg";
 
-export function ListPosts() {
-  // Hiển thị danh sách bài viết
+export default function ListPosts() {
+
+  // State
   const [posts, setPosts] = useState([]);
-
-  // Pagination
+  const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(8);
 
-  // Keyword
-  const [keyword, setKeyword] = useState("");
-
-  // Tuỳ chỉnh link sử dụng useNavigate
   const navigate = useNavigate();
 
+  // API
   const postsApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
   const searchPostApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/search/${keyword}`;
 
   /**
-   * ! Show Posts
+   * ! Cập nhật tiêu đề trang
+   */
+  useEffect(() => {
+    document.title = "List Posts Page";
+  });
+
+  /**
+   * ! Tìm kiếm bài viết theo tiêu đề
+   */
+  const handelSearch = () => {
+    const fetchPosts = async () => {
+      const res = await axios.get(searchPostApi);
+      setPosts(res.data);
+    };
+    fetchPosts();
+    navigate(`/posts/search/${keyword}`);
+  };
+
+  /**
+   * ! Hiển thị danh sách bài viết
    */
   useEffect(() => {
     const fetchPosts = async () => {
@@ -34,31 +49,15 @@ export function ListPosts() {
     fetchPosts();
   }, []);
 
-  // Seatch
-  const handelSearch = () => {
-    const fetchPosts = async () => {
-      const res = await axios.get(searchPostApi);
-      setPosts(res.data);
-    };
-    fetchPosts();
-    navigate(`/posts/search/${keyword}`);
-  };
-
-  // Cập nhật title
-  useEffect(() => {
-    document.title = "List Posts Page";
-  });
-
   /**
-   * ! Pagination
+   * ! Chức năng phân trang mỗi trang 8 bài viết
    */
-  // Change page
+  // Lấy thông tin trang người dùng đang chọn
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
     navigate(`/posts/${pageNumber}`);
   };
-
-  // Get current posts
+  // Lấy số bài viết trên trang hiện tại
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
@@ -67,7 +66,9 @@ export function ListPosts() {
     <div style={{ paddingTop: 80, paddingBottom: 80 }}>
       <div className="container">
         <div className="row m-2">
-          <div className="input-group input-group-sm mb-3">
+          
+        {/* Tìm kiếm */}
+        <div className="input-group input-group-sm mb-3">
             <input
               type="text"
               className="form-control"
@@ -77,20 +78,21 @@ export function ListPosts() {
               onChange={(e) => setKeyword(e.target.value)}
             />
             <div className="input-group-prepend">
-              <span
+              <SSearch
                 className="input-group-text"
                 id="inputGroup-sizing-sm"
                 onClick={handelSearch}
               >
                 Tìm kiếm
-              </span>
+              </SSearch>
             </div>
           </div>
 
+          {/* Danh sách bài viết */}
           {currentPosts.map((post) => (
             <div key={post.id} className="col-sm-6 col-md-3 my-2">
               <div className="card shadow-sm w-100" style={{ minHeight: 225 }}>
-                <img
+                <SThumbnail
                   className="card-img-top"
                   src={`http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/uploads/images/${post.thumbnail}`}
                   alt="Posts Thumbnail"
@@ -130,14 +132,14 @@ export function ListPosts() {
   );
 }
 
+const SThumbnail = styled.img`
+  max-height: 150px;
+  overflow: hidden;
+`
+
 const STitle = styled.h5`
   font-size: 15px;
   font-weight: bold;
-  /* &:hover {
-    color: #2980b9;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out 0s; 
-  }*/
 `;
 
 const SAuthorDate = styled.div`
@@ -164,4 +166,10 @@ const SDescription = styled.p`
 
 const SButton = styled.button`
   font-size: 10px;
+`;
+
+const SSearch = styled.span`
+  :hover {
+    cursor: pointer;
+  }
 `;

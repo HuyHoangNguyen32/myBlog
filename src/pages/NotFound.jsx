@@ -4,15 +4,19 @@ import { HomepageLayout } from "../components/templates/HomepageLayout";
 import { Footer } from "../components/layout/Footer";
 import notfound from "../assets/img/404.jpeg";
 
-export function NotFound() {
-  // Cập nhật title
+export default function NotFound() {
+
+  /**
+   * ! Cập nhật tiêu đề trang
+   */
   useEffect(() => {
     document.title = "404";
   });
 
-  //Đưa người dùng quay trở lại homapage sau 3s
+  /**
+   * ! Đưa người dùng quay trở lại homapage sau 3s
+   */
   const navigate = useNavigate()
-
   useEffect(() => {
     setTimeout(() => {
       navigate("/")
@@ -33,7 +37,7 @@ export function NotFound() {
             </p>
             <p className="lead">
               <span>
-              Bạn sẽ tự động được đưa trở lại Welcome Page sau 3 giây.
+              Bạn sẽ tự động được đưa trở lại trang chủ sau 3 giây.
               </span>
               <br />
               <span>

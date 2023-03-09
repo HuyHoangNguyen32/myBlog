@@ -21,10 +21,10 @@ export function AdminHeader() {
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">
               <NavLink className="nav-item nav-link" to="create">
-                Create Post
+                Tạo bài viết
               </NavLink>
               <NavLink className="nav-item nav-link" to="edit">
-                Edit Post
+                Chỉnh sửa bài viết
               </NavLink>
             </div>
           </div>

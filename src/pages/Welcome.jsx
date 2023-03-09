@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import welcome from "../assets/img/welcome.svg";
 
-export function Welcome() {
-  // Cập nhật title
+export default function Welcome() {
+
+  const navigate = useNavigate();
+
+   /**
+   * ! Cập nhật tiêu đề trang
+   */
   useEffect(() => {
     document.title = "Welcome Page";
   });
-
-  const navigate = useNavigate();
 
   function handleClickUserBtn() {
     navigate("/posts");
@@ -17,8 +20,6 @@ export function Welcome() {
   function handleClickAdminBtn() {
     navigate("/login");
   }
-
-
 
   return (
     <div className="container d-flex align-items-center justify-content-center vh-100">

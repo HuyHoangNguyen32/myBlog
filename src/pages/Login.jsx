@@ -1,26 +1,33 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import styled from "styled-components";
 import login from "../assets/img/login.webp";
 
+/**
+ * ! Quy định dữ liệu nhập
+ */
 const schema = yup.object({
-  username: yup.string().required("Username is a required field"),
+  username: yup.string().required("Bạn cần nhập email để đăng nhập."),
   password: yup
     .string()
-    .required("Password is a required field")
+    .required("Bạn cần nhập mật khẩu để đăng nhập.")
     .min(6, "Password must be at least 6 characters"),
 });
 
-export function Login() {
-  // Cập nhật title
+export default function Login() {
+  const [showAlert, setShowAlert] = useState(false);
+
+  const navigate = useNavigate();
+
+  /**
+   * ! Cập nhật tiêu đề trang
+   */
   useEffect(() => {
     document.title = "Login Page";
   });
-
-  const [showAlert, setShowAlert] = useState(false);
 
   const {
     handleSubmit,
@@ -30,8 +37,9 @@ export function Login() {
     resolver: yupResolver(schema),
   });
 
-  const navigate = useNavigate();
-
+  /**
+   * ! Xác thực đăng nhập
+   */
   const formSubmit = (data) => {
     const USERNAME_INFO = data.username;
     const PASSWORD_INFO = data.password;
@@ -50,19 +58,22 @@ export function Login() {
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           {showAlert && (
-              <div
-                className="mb-5 alert alert-warning alert-dismissible fade show"
-                role="alert"
-              >
-                <strong>Email hoặc Password bạn nhập không chính xác.</strong> Vui lòng thử lại để đăng nhập.
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                  onClick={() => setShowAlert(false)}
-                ></button>
-              </div>
+            <div
+              className="mb-5 alert alert-warning alert-dismissible fade show"
+              role="alert"
+            >
+              <strong>Email hoặc Mật khẩu bạn nhập không chính xác.</strong> Vui
+              lòng thử lại để đăng nhập.
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+                onClick={() => {
+                  setShowAlert(false);
+                }}
+              ></button>
+            </div>
           )}
 
           <div className="col-lg-6 col-md-6">
@@ -72,37 +83,38 @@ export function Login() {
           <div className="col-lg-6 col-md-6">
             <h2 className="text-center mb-3">Đăng nhập My Blog Admin</h2>
             <p>
-              Bạn vui lòng nhập Email address và Password để đăng nhập vào màn hình quản trị My Blog.
+              Bạn vui lòng nhập Email và Mật khẩu để đăng nhập vào màn hình quản
+              trị My Blog.
             </p>
             <form onSubmit={handleSubmit(formSubmit)}>
-              {/* <!-- Email input --> */}
+              {/* Email input */}
               <div className="form-outline mb-3">
                 <label className="form-label">
-                  <b>Email address</b> <SRequired>*</SRequired>
+                  <b>Email của bạn</b> <SRequired>*</SRequired>
                 </label>
                 <input
                   type="email"
                   className="form-control"
-                  placeholder="Enter a valid email address"
+                  placeholder="Nhập email của bạn"
                   {...register("username")}
                 />
                 <SError>{errors.username?.message}</SError>
               </div>
-              {/* <!-- Password input --> */}
+              {/* Password input */}
               <div className="form-outline mb-3">
                 <label className="form-label">
-                <b>Password</b> <SRequired>*</SRequired>
+                  <b>Mật khẩu</b> <SRequired>*</SRequired>
                 </label>
                 <input
                   type="password"
                   className="form-control"
-                  placeholder="Enter password"
+                  placeholder="Nhập mật khẩu"
                   {...register("password")}
                 />
                 <SError>{errors.password?.message}</SError>
                 <div className="text-center text-lg-start mt-4 pt-2">
                   <button type="submit" className="btn btn-primary btn-sm">
-                    Login to Admin Page
+                    Đăng nhập trang Admin
                   </button>
                 </div>
               </div>
