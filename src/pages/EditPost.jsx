@@ -47,11 +47,13 @@ export default function EditPost() {
    * ! Tìm kiếm bài viết theo tiêu đề
    */
   const handelSearch = () => {
-    const fetchPosts = async () => {
-      const res = await axios.get(searchPostApi);
-      setPosts(res.data);
-    };
-    fetchPosts();
+    if (keyword) {
+      const fetchPosts = async () => {
+        const res = await axios.get(searchPostApi);
+        setPosts(res.data);
+      };
+      fetchPosts();
+    }
   };
 
   /**
@@ -119,7 +121,6 @@ export default function EditPost() {
    * ! Cập nhật bài post khi người dùng nhấn nút "Cập nhật bài viết"
    */
   const submitEditPost = () => {
-
     // Dữ liệu gửi đi
     var options = {
       method: "PUT",
@@ -355,7 +356,7 @@ export default function EditPost() {
                     >
                       Xoá
                     </button>
-                    
+
                     {/* Edit Post */}
                     <button
                       style={{ margin: 5 }}

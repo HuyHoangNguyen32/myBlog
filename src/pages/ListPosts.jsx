@@ -29,12 +29,13 @@ export default function ListPosts() {
    * ! Tìm kiếm bài viết theo tiêu đề
    */
   const handelSearch = () => {
-    const fetchPosts = async () => {
-      const res = await axios.get(searchPostApi);
-      setPosts(res.data);
-    };
-    fetchPosts();
-    navigate(`/posts/search/${keyword}`);
+    if(keyword) {
+      const fetchPosts = async () => {
+        const res = await axios.get(searchPostApi);
+        setPosts(res.data);
+      };
+      fetchPosts();
+    }
   };
 
   /**
@@ -44,7 +45,6 @@ export default function ListPosts() {
     const fetchPosts = async () => {
       const res = await axios.get(postsApi);
       setPosts(res.data.reverse());
-      console.log(res.data);
     };
     fetchPosts();
   }, []);
