@@ -11,7 +11,7 @@ export default function Welcome() {
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "Welcome Page";
+    document.title = "Trang chủ";
   });
 
   function handleClickUserBtn() {
@@ -28,19 +28,19 @@ export default function Welcome() {
           <img src={welcome} className="img-fluid" alt="Welcome" />
         </div>
         <SContent className="col-md-6">
-          <h3>Welcome to My Blog</h3>
+          <h3 class="text-center">Chào mừng bạn đến My Blog</h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae
-            temporibus iste minima repellendus officiis nihil culpa quas. Dolor
-            fuga doloremque aperiam dolorem rem dignissimos, provident harum,
-            molestiae, id nemo sint!
+            Bạn sẽ sử dụng My Blog với vai trò người dùng hay quản trị viên.Vui lòng nhấn nút phù hợp dưới đây để tham gia.
+            <br/>
+            <SStart>*</SStart> <b>Người dùng</b> : bạn có thể xem danh sách bài viết và thông tin chi tiết bài viết bạn quan tâm.<br/>
+            <SStart>*</SStart> <b>Quản trị viên</b> : bạn có thể tham gia tạo bài viết, chỉnh sửa và xoá bài viết.Bạn sẽ cần email và mật khẩu để đăng nhập tài khoản cho quản trị viên.
           </p>
           <div>
             <button className="btn btn-sm btn-primary" onClick={handleClickUserBtn}>
-              User
+              Người dùng
             </button>
             <SButtonAdmin className="btn btn-sm btn-success" onClick={handleClickAdminBtn}>
-              Admin
+              Quản trị viên
             </SButtonAdmin>
           </div>
         </SContent>
@@ -54,7 +54,12 @@ const SContent = styled.div`
   flex-direction: column;
   justify-content: center;
   padding: 20px;
+  line-height: 25px;
 `;
 const SButtonAdmin = styled.button`
   margin-left: 10px;
 `;
+
+const SStart = styled.span`
+  color:#e74c3c;
+`

@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Pagination } from "../components/Pagination";
 
 export default function ListPosts() {
-
   // State
   const [posts, setPosts] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -15,21 +14,21 @@ export default function ListPosts() {
   const navigate = useNavigate();
 
   // API
-  const postsApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
-  const searchPostApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/search/${keyword}`;
+  const postsApi = "https://myblog-backend.click/api/posts";
+  const searchPostApi = `https://myblog-backend.click/api/posts/search/${keyword}`;
 
   /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "List Posts Page";
+    document.title = "Danh sách bài viết";
   });
 
   /**
    * ! Tìm kiếm bài viết theo tiêu đề
    */
   const handelSearch = () => {
-    if(keyword) {
+    if (keyword) {
       const fetchPosts = async () => {
         const res = await axios.get(searchPostApi);
         setPosts(res.data);
@@ -66,9 +65,8 @@ export default function ListPosts() {
     <div style={{ paddingTop: 80, paddingBottom: 80 }}>
       <div className="container">
         <div className="row m-2">
-          
-        {/* Tìm kiếm */}
-        <div className="input-group input-group-sm mb-3">
+          {/* Tìm kiếm */}
+          <div className="input-group input-group-sm mb-3">
             <input
               type="text"
               className="form-control"
@@ -91,10 +89,13 @@ export default function ListPosts() {
           {/* Danh sách bài viết */}
           {currentPosts.map((post) => (
             <div key={post.id} className="col-sm-6 col-md-3 my-2">
-              <div className="card shadow-sm w-100" style={{ minHeight: 225 }}>
+              <div
+                className="card shadow-sm w-100 h-100"
+                style={{ minHeight: 225 }}
+              >
                 <SThumbnail
                   className="card-img-top"
-                  src={`http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/uploads/images/${post.thumbnail}`}
+                  src={`https://myblog-backend.click/uploads/images/${post.thumbnail}`}
                   alt="Posts Thumbnail"
                 />
                 <div className="card-body">
@@ -113,7 +114,7 @@ export default function ListPosts() {
                       style={{ color: "#fff", textDecoration: "none" }}
                       to={`/post/${post.id}`}
                     >
-                      Read More
+                      Đọc bài viết
                     </NavLink>
                   </SButton>
                 </div>
@@ -135,15 +136,15 @@ export default function ListPosts() {
 const SThumbnail = styled.img`
   max-height: 150px;
   overflow: hidden;
-`
+`;
 
 const STitle = styled.h5`
-  font-size: 15px;
+  font-size: 20px;
   font-weight: bold;
 `;
 
 const SAuthorDate = styled.div`
-  font-size: 10px;
+  font-size: 14px;
   color: #fff;
   display: flex;
   p {
@@ -161,11 +162,11 @@ const SAuthorDate = styled.div`
 `;
 
 const SDescription = styled.p`
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 const SButton = styled.button`
-  font-size: 10px;
+  font-size: 14px;
 `;
 
 const SSearch = styled.span`

@@ -30,17 +30,15 @@ export default function EditPost() {
   const navigate = useNavigate();
 
   // API
-  const postsApi =
-    "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
-  const putPostApi =
-    "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
-  const searchPostApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/search/${keyword}`;
+  const postsApi = "https://myblog-backend.click/api/posts";
+  const putPostApi = "https://myblog-backend.click/api/posts";
+  const searchPostApi = `https://myblog-backend.click/api/posts/search/${keyword}`;
 
   /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "Edit Post Page";
+    document.title = "Sửa xoá bài viết";
   });
 
   /**
@@ -168,9 +166,7 @@ export default function EditPost() {
         <div>
           <form>
             <div className="form-group">
-              <label>
-                <b>Tiêu đề</b>
-              </label>
+              <label>Tiêu đề</label>
               <input
                 className="form-control"
                 type="text"
@@ -180,9 +176,7 @@ export default function EditPost() {
             </div>
             <br />
             <div className="form-group">
-              <label>
-                <b>Tác giả</b>
-              </label>
+              <label>Tác giả</label>
               <input
                 className="form-control"
                 type="text"
@@ -192,9 +186,7 @@ export default function EditPost() {
             </div>
             <br />
             <div className="form-group">
-              <label>
-                <b>Ngày tháng đăng</b>
-              </label>
+              <label>Ngày tháng năm đăng bài</label>
               <input
                 className="form-control"
                 type="text"
@@ -204,9 +196,7 @@ export default function EditPost() {
             </div>
             <br />
             <div className="form-group">
-              <label>
-                <b>Đoạn trích dẫn</b>
-              </label>
+              <label>Đoạn trích dẫn</label>
               <textarea
                 style={{ height: "100px" }}
                 className="form-control"
@@ -325,7 +315,7 @@ export default function EditPost() {
                 <th scope="col">No</th>
                 <th scope="col">Tiêu đề</th>
                 <th scope="col">Tác giả</th>
-                <th scope="col">Trích dẫn</th>
+                <th scope="col">Đoạn trích dẫn</th>
                 <th scope="col">Thao tác</th>
               </tr>
             </thead>

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import sampleThumbnail from "../assets/img/post-detail-thumbnail.jpeg";
 
 export default function CreatePost() {
-
   // State
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -20,20 +19,19 @@ export default function CreatePost() {
   const imageRef = useRef();
 
   // API
-  const putPostApi = "http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts";
+  const putPostApi = "https://myblog-backend.click/api/posts";
 
   /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "Create Post Page";
+    document.title = "Tạo bài viết";
   });
 
   /**
    * ! Gửi thông tin bài viết người dùng tạo lên Database
    */
   const publicPost = () => {
-
     // Lấy dữ liệu gửi đi
     const formData = new FormData();
     formData.append("title", title);
@@ -148,7 +146,7 @@ export default function CreatePost() {
           </div>
           <br />
           <div className="form-group">
-            <label>Ngày tháng năm</label>
+            <label>Ngày tháng năm đăng bài</label>
             <input
               className="form-control"
               type="text"
@@ -160,7 +158,7 @@ export default function CreatePost() {
           </div>
 
           <div className="form-group">
-            <label>Trích dẫn</label>
+            <label>Đoạn trích dẫn</label>
             <STextArea
               className="form-control"
               type="text"
@@ -179,9 +177,11 @@ export default function CreatePost() {
               accept="image/*"
               onChange={handleFileSelect}
             />
-            {showAlertFileSize && 
-              <SShowAlertFileSize className="text-danger">* Vui lòng tải hình ảnh có dung lượng dưới 1MB</SShowAlertFileSize>
-            }
+            {showAlertFileSize && (
+              <SShowAlertFileSize className="text-danger">
+                * Vui lòng tải hình ảnh có dung lượng dưới 1MB
+              </SShowAlertFileSize>
+            )}
           </div>
           <br />
           <button
@@ -192,7 +192,6 @@ export default function CreatePost() {
             Công bố bài viết
           </button>
         </form>
-
 
         <br />
         <h5>Dưới đây là bài viết mẫu mà bạn vừa nhập ở trên.</h5>
@@ -247,7 +246,7 @@ const STitle = styled.h2`
 `;
 
 const SAuthorDate = styled.div`
-  font-size: 12px;
+  font-size: 16px;
   color: #fff;
   display: flex;
   margin-top: 10px;
@@ -266,7 +265,7 @@ const SAuthorDate = styled.div`
 `;
 
 const SContent = styled.p`
-  font-size: 14px;
+  font-size: 18px;
   margin-top: 10px;
   ::first-letter {
     margin-left: 20px;

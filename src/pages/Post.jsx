@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Post() {
-
   const { id } = useParams();
   const [post, setPost] = useState([]);
 
   // API
-  const postApi = `http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/api/posts/${id}`;
+  const postApi = `https://myblog-backend.click/api/posts/${id}`;
 
   /**
    * ! Cập nhật tiêu đề trang
@@ -29,7 +28,11 @@ export default function Post() {
   return (
     <div className="container" style={{ paddingTop: 80 }}>
       <div className="row">
-        <SImage className="img-fluid" src={`http://myblogbackend2-env.eba-tisvxmry.ap-northeast-1.elasticbeanstalk.com/uploads/images/${post.thumbnail}`} alt="Post Thumbnail" />
+        <SImage
+          className="img-fluid"
+          src={`https://myblog-backend.click/uploads/images/${post.thumbnail}`}
+          alt="Post Thumbnail"
+        />
         <STitle className="text-capitalize">{post.title}</STitle>
         <SAuthorDate>
           <p className="author">{post.author}</p>
@@ -49,13 +52,13 @@ const SImage = styled.img`
 `;
 
 const STitle = styled.h2`
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
   margin-top: 10px;
 `;
 
 const SAuthorDate = styled.div`
-  font-size: 12px;
+  font-size: 16px;
   color: #fff;
   display: flex;
   margin-top: 10px;
@@ -74,7 +77,7 @@ const SAuthorDate = styled.div`
 `;
 
 const SContent = styled.p`
-  font-size: 14px;
+  font-size: 18px;
   margin-top: 10px;
   ::first-letter {
     margin-left: 20px;
@@ -82,5 +85,3 @@ const SContent = styled.p`
     font-weight: bold;
   }
 `;
-
-
