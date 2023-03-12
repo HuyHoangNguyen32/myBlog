@@ -1,27 +1,26 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { HomepageLayout } from "../components/templates/HomepageLayout";
-import { Footer } from "../components/layout/Footer";
-import notfound from "../assets/img/404.jpeg";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { HomepageLayout } from '../components/templates/HomepageLayout';
+import { Footer } from '../components/layout/Footer';
+import notfound from '../assets/img/404.jpeg';
 
 export default function NotFound() {
-
   /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "404";
+    document.title = '404';
   });
 
   /**
    * ! Đưa người dùng quay trở lại homapage sau 3s
    */
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {
-      navigate("/")
-    }, 3000)
-  },[navigate])
+      navigate('/');
+    }, 3000);
+  }, [navigate]);
 
   return (
     <div>
@@ -36,14 +35,10 @@ export default function NotFound() {
               <span className="text-danger">Trang bạn tìm kiếm không tồn tại.</span>
             </p>
             <p className="lead">
-              <span>
-              Bạn sẽ tự động được đưa trở lại trang chủ sau 3 giây.
-              </span>
+              <span>Bạn sẽ tự động được đưa trở lại trang chủ sau 3 giây.</span>
               <br />
-              <span>
-              Vui lòng chờ trong giây lát.
-              </span>
-              </p>
+              <span>Vui lòng chờ trong giây lát.</span>
+            </p>
           </div>
         </div>
       </div>

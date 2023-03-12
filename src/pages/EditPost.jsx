@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import styled from "styled-components";
-import { Pagination } from "../components/Pagination";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
+import { Pagination } from '../components/Pagination';
 
 export default function EditPost() {
   // State
   const [posts, setPosts] = useState([]);
 
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
 
   const [showEditor, setShowEditor] = useState(false);
   const [showListPost, setShowListPost] = useState(true);
@@ -21,7 +21,7 @@ export default function EditPost() {
 
   const [postId, setPostId] = useState(null); // Lấy ID bài viết user muốn chỉnh sửa
 
-  const [keyword, setKeyword] = useState(""); // Lấy từ khoá tìm kiếm user nhập
+  const [keyword, setKeyword] = useState(''); // Lấy từ khoá tìm kiếm user nhập
 
   const [showAlertDeleteSuccess, setShowAlertDeleteSuccess] = useState(false);
   const [showAlertDeleteCancel, setShowAlertDeleteCancel] = useState(false);
@@ -30,15 +30,15 @@ export default function EditPost() {
   const navigate = useNavigate();
 
   // API
-  const postsApi = "https://myblog-backend.click/api/posts";
-  const putPostApi = "https://myblog-backend.click/api/posts";
+  const postsApi = 'https://myblog-backend.click/api/posts';
+  const putPostApi = 'https://myblog-backend.click/api/posts';
   const searchPostApi = `https://myblog-backend.click/api/posts/search/${keyword}`;
 
   /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "Sửa xoá bài viết";
+    document.title = 'Sửa xoá bài viết';
   });
 
   /**
@@ -67,14 +67,14 @@ export default function EditPost() {
    * ! Xoá bài viết khi user nhấn nút "Xoá"
    */
   const deletePost = (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xoá bài viết đã chọn không ?")) {
+    if (window.confirm('Bạn có chắc chắn muốn xoá bài viết đã chọn không ?')) {
       var options = {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       };
-      fetch(putPostApi + "/" + id, options).then((response) => response.json());
+      fetch(putPostApi + '/' + id, options).then((response) => response.json());
 
       setShowAlertDeleteSuccess(true);
     } else {
@@ -97,12 +97,12 @@ export default function EditPost() {
    */
   const getEditPost = (id) => {
     var options = {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
-    fetch(putPostApi + "/" + id, options)
+    fetch(putPostApi + '/' + id, options)
       .then((response) => response.json())
       .then((post) => {
         return (
@@ -121,9 +121,9 @@ export default function EditPost() {
   const submitEditPost = () => {
     // Dữ liệu gửi đi
     var options = {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         title,
@@ -134,9 +134,7 @@ export default function EditPost() {
     };
 
     // Gửi dũ liệu đi
-    fetch(putPostApi + "/" + postId, options).then((response) =>
-      response.json()
-    );
+    fetch(putPostApi + '/' + postId, options).then((response) => response.json());
 
     // Reset lại trạng thái ban đầu và hiển thị alert
     setShowEditor(false);
@@ -159,7 +157,7 @@ export default function EditPost() {
 
   return (
     <div style={{ marginTop: 80, paddingBottom: 80 }}>
-      <h2 style={{ marginBottom: "25px" }}>Xoá hoặc sửa bài viết</h2>
+      <h2 style={{ marginBottom: '25px' }}>Xoá hoặc sửa bài viết</h2>
 
       {/* Hiển thị Editor để chỉnh sửa bài viết */}
       {showEditor && (
@@ -198,7 +196,7 @@ export default function EditPost() {
             <div className="form-group">
               <label>Đoạn trích dẫn</label>
               <textarea
-                style={{ height: "100px" }}
+                style={{ height: '100px' }}
                 className="form-control"
                 type="text"
                 value={description}
@@ -210,7 +208,7 @@ export default function EditPost() {
           <button
             type="button"
             className="btn btn-sm btn-success"
-            style={{ marginRight: "5px" }}
+            style={{ marginRight: '5px' }}
             onClick={() => {
               setShowEditor(false);
               setShowListPost(true);
@@ -218,11 +216,7 @@ export default function EditPost() {
           >
             Huỷ bỏ
           </button>
-          <button
-            type="button"
-            className="btn btn-sm btn-primary"
-            onClick={submitEditPost}
-          >
+          <button type="button" className="btn btn-sm btn-primary" onClick={submitEditPost}>
             Cập nhật bài viết
           </button>
           <br />
@@ -233,10 +227,7 @@ export default function EditPost() {
       {/* Alert Delete Success */}
       {showAlertDeleteSuccess && (
         <div>
-          <div
-            className="mt-5 mb-5 alert alert-success alert-dismissible fade show"
-            role="alert"
-          >
+          <div className="mt-5 mb-5 alert alert-success alert-dismissible fade show" role="alert">
             Bạn đã xoá bài viết thành công.
             <button
               type="button"
@@ -251,10 +242,7 @@ export default function EditPost() {
       {/* Alert Delete Cancel */}
       {showAlertDeleteCancel && (
         <div>
-          <div
-            className="mt-5 mb-5 alert alert-primary alert-dismissible fade show"
-            role="alert"
-          >
+          <div className="mt-5 mb-5 alert alert-primary alert-dismissible fade show" role="alert">
             Bạn đã huỷ thao tác xoá bài viết thành công.
             <button
               type="button"
@@ -270,10 +258,7 @@ export default function EditPost() {
       {/* Alert Edit Success */}
       {showAlertEditSuccess && (
         <div>
-          <div
-            className="mt-5 mb-5 alert alert-success alert-dismissible fade show"
-            role="alert"
-          >
+          <div className="mt-5 mb-5 alert alert-success alert-dismissible fade show" role="alert">
             Bạn đã chỉnh sửa bài viết thành công.
             <button
               type="button"
@@ -325,11 +310,7 @@ export default function EditPost() {
               {currentPosts.map((post, index) => (
                 <tr key={post.id}>
                   <th scope="row">{index + 1}</th>
-                  <td>
-                    {post.title.length > 20
-                      ? `${post.title.slice(0, 30)} ...`
-                      : post.title}
-                  </td>
+                  <td>{post.title.length > 20 ? `${post.title.slice(0, 30)} ...` : post.title}</td>
                   <td>{post.author}</td>
                   <td>
                     {post.description.length > 90
@@ -367,11 +348,7 @@ export default function EditPost() {
       )}
 
       {showListPost && (
-        <Pagination
-          postsPerPage={postsPerPage}
-          totalPosts={posts.length}
-          paginate={paginate}
-        />
+        <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate} />
       )}
     </div>
   );

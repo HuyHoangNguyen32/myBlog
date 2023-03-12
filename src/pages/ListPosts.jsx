@@ -1,27 +1,27 @@
-import { useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
-import styled from "styled-components";
-import { Pagination } from "../components/Pagination";
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
+import { Pagination } from '../components/Pagination';
 
 export default function ListPosts() {
   // State
   const [posts, setPosts] = useState([]);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(8);
 
   const navigate = useNavigate();
 
   // API
-  const postsApi = "https://myblog-backend.click/api/posts";
+  const postsApi = 'https://myblog-backend.click/api/posts';
   const searchPostApi = `https://myblog-backend.click/api/posts/search/${keyword}`;
 
   /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "Danh sách bài viết";
+    document.title = 'Danh sách bài viết';
   });
 
   /**
@@ -89,10 +89,7 @@ export default function ListPosts() {
           {/* Danh sách bài viết */}
           {currentPosts.map((post) => (
             <div key={post.id} className="col-sm-6 col-md-3 my-2">
-              <div
-                className="card shadow-sm w-100 h-100"
-                style={{ minHeight: 225 }}
-              >
+              <div className="card shadow-sm w-100 h-100" style={{ minHeight: 225 }}>
                 <SThumbnail
                   className="card-img-top"
                   src={`https://myblog-backend.click/uploads/images/${post.thumbnail}`}
@@ -111,7 +108,7 @@ export default function ListPosts() {
                   </SDescription>
                   <SButton className="btn btn-sm btn-primary">
                     <NavLink
-                      style={{ color: "#fff", textDecoration: "none" }}
+                      style={{ color: '#fff', textDecoration: 'none' }}
                       to={`/post/${post.id}`}
                     >
                       Đọc bài viết
@@ -122,11 +119,7 @@ export default function ListPosts() {
             </div>
           ))}
 
-          <Pagination
-            postsPerPage={postsPerPage}
-            totalPosts={posts.length}
-            paginate={paginate}
-          />
+          <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate} />
         </div>
       </div>
     </div>

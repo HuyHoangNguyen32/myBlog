@@ -1,24 +1,23 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import welcome from "../assets/img/welcome.svg";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import welcome from '../assets/img/welcome.svg';
 
 export default function Welcome() {
-
   const navigate = useNavigate();
 
-   /**
+  /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "Trang chủ";
+    document.title = 'Trang chủ';
   });
 
   function handleClickUserBtn() {
-    navigate("/posts");
+    navigate('/posts');
   }
   function handleClickAdminBtn() {
-    navigate("/login");
+    navigate('/login');
   }
 
   return (
@@ -30,10 +29,14 @@ export default function Welcome() {
         <SContent className="col-md-6">
           <h3 class="text-center">Chào mừng bạn đến My Blog</h3>
           <p>
-            Bạn sẽ sử dụng My Blog với vai trò người dùng hay quản trị viên.Vui lòng nhấn nút phù hợp dưới đây để tham gia.
-            <br/>
-            <SStart>*</SStart> <b>Người dùng</b> : bạn có thể xem danh sách bài viết và thông tin chi tiết bài viết bạn quan tâm.<br/>
-            <SStart>*</SStart> <b>Quản trị viên</b> : bạn có thể tham gia tạo bài viết, chỉnh sửa và xoá bài viết.Bạn sẽ cần email và mật khẩu để đăng nhập tài khoản cho quản trị viên.
+            Bạn sẽ sử dụng My Blog với vai trò người dùng hay quản trị viên.Vui lòng nhấn nút phù
+            hợp dưới đây để tham gia.
+            <br />
+            <SStart>*</SStart> <b>Người dùng</b> : bạn có thể xem danh sách bài viết và thông tin
+            chi tiết bài viết bạn quan tâm.
+            <br />
+            <SStart>*</SStart> <b>Quản trị viên</b> : bạn có thể tham gia tạo bài viết, chỉnh sửa và
+            xoá bài viết.Bạn sẽ cần email và mật khẩu để đăng nhập tài khoản cho quản trị viên.
           </p>
           <div>
             <button className="btn btn-sm btn-primary" onClick={handleClickUserBtn}>
@@ -61,5 +64,5 @@ const SButtonAdmin = styled.button`
 `;
 
 const SStart = styled.span`
-  color:#e74c3c;
-`
+  color: #e74c3c;
+`;

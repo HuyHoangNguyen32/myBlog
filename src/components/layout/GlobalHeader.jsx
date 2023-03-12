@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 export function GlobalHeader() {
   return (
@@ -29,4 +29,3 @@ export function GlobalHeader() {
     </nav>
   );
 }
-

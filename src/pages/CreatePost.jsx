@@ -1,13 +1,13 @@
-import { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-import sampleThumbnail from "../assets/img/post-detail-thumbnail.jpeg";
+import { useState, useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import sampleThumbnail from '../assets/img/post-detail-thumbnail.jpeg';
 
 export default function CreatePost() {
   // State
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
 
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertFileSize, setShowAlertFileSize] = useState(false);
@@ -19,13 +19,13 @@ export default function CreatePost() {
   const imageRef = useRef();
 
   // API
-  const putPostApi = "https://myblog-backend.click/api/posts";
+  const putPostApi = 'https://myblog-backend.click/api/posts';
 
   /**
    * ! Cập nhật tiêu đề trang
    */
   useEffect(() => {
-    document.title = "Tạo bài viết";
+    document.title = 'Tạo bài viết';
   });
 
   /**
@@ -34,15 +34,15 @@ export default function CreatePost() {
   const publicPost = () => {
     // Lấy dữ liệu gửi đi
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("author", author);
-    formData.append("date", date);
-    formData.append("description", description);
-    formData.append("thumbnail", image);
+    formData.append('title', title);
+    formData.append('author', author);
+    formData.append('date', date);
+    formData.append('description', description);
+    formData.append('thumbnail', image);
 
     // Dữ liệu sẽ được gửi đi
     var options = {
-      method: "POST",
+      method: 'POST',
       body: formData,
     };
 
@@ -53,10 +53,10 @@ export default function CreatePost() {
       .catch((err) => console.log(err));
 
     // Reset thông tin trên các ô input và hình ảnh mẫu
-    setTitle("");
-    setAuthor("");
-    setDescription("");
-    setDate("");
+    setTitle('');
+    setAuthor('');
+    setDescription('');
+    setDate('');
     setImgPreview(null);
 
     // Đặt lại giá trị cho input type=file sau khi đăng bài
@@ -103,10 +103,7 @@ export default function CreatePost() {
       {/* Alert công bố bài viết thành công */}
       {showAlert && (
         <div>
-          <div
-            className="mt-5 mb-5 alert alert-info alert-dismissible fade show"
-            role="alert"
-          >
+          <div className="mt-5 mb-5 alert alert-info alert-dismissible fade show" role="alert">
             <strong>Xin chúc mừng!</strong> Bài viết của bạn đã được công bố.
             <button
               type="button"
@@ -184,11 +181,7 @@ export default function CreatePost() {
             )}
           </div>
           <br />
-          <button
-            type="button"
-            className="btn btn-primary btn-sm"
-            onClick={publicPost}
-          >
+          <button type="button" className="btn btn-primary btn-sm" onClick={publicPost}>
             Công bố bài viết
           </button>
         </form>
@@ -206,10 +199,10 @@ export default function CreatePost() {
               src={imgPreview || sampleThumbnail}
               alt="Post Thumbnail"
             />
-            <STitle className="text-capitalize">{title || "Tiêu đề"}</STitle>
+            <STitle className="text-capitalize">{title || 'Tiêu đề'}</STitle>
             <SAuthorDate>
-              <p className="author">{author || "Tác giả"}</p>
-              <p className="date">{date || "Ngày/tháng/năm"}</p>
+              <p className="author">{author || 'Tác giả'}</p>
+              <p className="date">{date || 'Ngày/tháng/năm'}</p>
             </SAuthorDate>
             <SContent>
               {description ||

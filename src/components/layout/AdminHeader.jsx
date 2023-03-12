@@ -1,12 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 export function AdminHeader() {
   return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-        <div className="container">
-        <span className="navbar-brand">
-          Admin Dashboard
-        </span>
+    <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+      <div className="container">
+        <span className="navbar-brand">Admin Dashboard</span>
         <button
           className="navbar-toggler"
           type="button"
@@ -18,17 +16,17 @@ export function AdminHeader() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div className="navbar-nav">
-              <NavLink className="nav-item nav-link" to="create">
-                Tạo bài viết
-              </NavLink>
-              <NavLink className="nav-item nav-link" to="edit">
-                Chỉnh sửa bài viết
-              </NavLink>
-            </div>
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div className="navbar-nav">
+            <NavLink className="nav-item nav-link" to="create">
+              Tạo bài viết
+            </NavLink>
+            <NavLink className="nav-item nav-link" to="edit">
+              Chỉnh sửa bài viết
+            </NavLink>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
   );
 }
